@@ -25,6 +25,40 @@ from aiogram.utils.markdown import hbold
 TOKEN = "6769635335:AAHnLfxRzsJh7RnSFkcHgDzxnSDeckC4XaA"
 dp = Dispatcher()
 
+def getSettingsInlineKeyboard():
+    buttons = [
+        [types.InlineKeyboardButton(text="Минимальный спред", callback_data="keyboard_minSpread")],
+        [types.InlineKeyboardButton(text="🗒️ Инструкция", callback_data="keyboard_instruction")]
+        [types.InlineKeyboardButton(text="В начало", callback_data="keyboard_toTheBeginning")]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+def getPaymentsInlineKeyboard():
+    buttons = [
+        [types.InlineKeyboardButton(text="1 месяц", callback_data="test")],
+        [types.InlineKeyboardButton(text="В начало", callback_data="test")]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+def getTradeInlineKeyboard():
+    buttons = [
+        [types.InlineKeyboardButton(text="ТОП-20 процентных ставок", callback_data="test")],
+        [types.InlineKeyboardButton(text="Ставки на Фьючерсах", callback_data="test")]
+        [types.InlineKeyboardButton(text="Ставки на Фьючерсы-Спот", callback_data="test")]
+        [types.InlineKeyboardButton(text="Инструкция", callback_data="test")]
+        [types.InlineKeyboardButton(text="В начало", callback_data="test")]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+def getHomeInlineKeyboard():
+    buttons = [
+        [types.InlineKeyboardButton(text="⚙️Настройки", callback_data="⚙️Настройки")],
+        [types.InlineKeyboardButton(text="💵️ Оплата", callback_data="test")],
+        [types.InlineKeyboardButton(text="📋️ Торговля", callback_data="test")],
+        [types.InlineKeyboardButton(text="🗒️ Инструкция", callback_data="test")],
+        [types.InlineKeyboardButton(text="📓️️ Информация", callback_data="test")]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 def getSettingsKeyboard():
     button_settings = KeyboardButton(text="Минимальный спред")
@@ -74,19 +108,14 @@ def getHomeKeyboard():
 @dp.message(CommandStart())
 async def command_start_handler(message: Message):
     keyboard = getHomeKeyboard()
+    inlineKeyboard = getHomeInlineKeyboard()
 
     markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
 
     await message.answer(
-        text=f"Hello, {markdown.hbold(message.from_user.full_name)}!",
-        parse_mode=ParseMode.HTML,
-        reply_markup=markup,
+        text="test",
+        reply_markup=inlineKeyboard,
     )
-
-
-# @dp.message(Command('keyboard'))
-# async def command_keyboard_handler(message: Message):
-#     await message.answer("Нажмите кнопку", reply_markup=keyboard())
 
 
 @dp.message()
@@ -94,20 +123,21 @@ async def echo_handler(message: types.Message):
     try:
         if message.text == "⚙️Настройки":
             keyboard = getSettingsKeyboard()
+            inlineKeyboard = getSettingsInlineKeyboard()
         elif message.text == "💵️ Оплата":
+            inlineKeyboard = getPaymentsInlineKeyboard()
             keyboard = getPaymentsKeyboard()
         elif message.text == "📋️ Торговля":
+            inlineKeyboard = getTradeInlineKeyboard()
             keyboard = getTradeKeyboard()
         elif message.text == "В начало":
+            inlineKeyboard = getHomeInlineKeyboard()
             keyboard = getHomeKeyboard()
 
-        markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
+        markup = ReplyKeyboardMarkup(keyboard=inlineKeyboard, resize_keyboard=True)
         await message.answer(
-            text=f"Hello, {markdown.hbold(message.from_user.full_name)}!",
-            parse_mode=ParseMode.HTML,
             reply_markup=markup,
         )
-        await message.send_copy(chat_id=message.chat.id)
     except TypeError:
         await message.answer("Nice try!")
 
