@@ -22,7 +22,7 @@ from aiogram.utils.keyboard import \
 from aiogram.utils.markdown import hbold
 
 
-TOKEN = "6769635335:AAHnLfxRzsJh7RnSFkcHgDzxnSDeckC4XaA"
+TOKEN = "TOKEN"
 dp = Dispatcher()
 
 
