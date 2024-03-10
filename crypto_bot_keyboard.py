@@ -25,10 +25,10 @@ dp = Dispatcher()
 
 def getHomeInlineKeyboard():
     buttons = [
-        [types.InlineKeyboardButton(text="⚙️ Настройки", callback_data="keyboard_settings")],
+        [types.InlineKeyboardButton(text="⚙️ Настройки", callback_data="keyboard_settings",)],
         [types.InlineKeyboardButton(text="💵️ Оплата", callback_data="test")],
         [types.InlineKeyboardButton(text="📋️ Торговля", callback_data="test")],
-        [types.InlineKeyboardButton(text="🗒️ Инструкция", callback_data="test")],
+        [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
         [types.InlineKeyboardButton(text="📓️️ Информация", callback_data="test")],
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
@@ -151,7 +151,8 @@ async def callbacks_num(callback: types.CallbackQuery):
     if callback_data == "settings":
         inlineKeyboard = getSettingsInlineKeyboard()
 
-    await callback.message.edit_reply_markup(
+    await callback.message.answer(
+        text="test",
         reply_markup=inlineKeyboard,
     )
 
