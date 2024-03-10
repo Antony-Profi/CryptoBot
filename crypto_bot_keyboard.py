@@ -25,7 +25,7 @@ dp = Dispatcher()
 
 def getHomeInlineKeyboard():
     buttons = [
-        [types.InlineKeyboardButton(text="⚙️ Настройки", callback_data="⚙️ Настройки")],
+        [types.InlineKeyboardButton(text="⚙️ Настройки", callback_data="keyboard_settings")],
         [types.InlineKeyboardButton(text="💵️ Оплата", callback_data="test")],
         [types.InlineKeyboardButton(text="📋️ Торговля", callback_data="test")],
         [types.InlineKeyboardButton(text="🗒️ Инструкция", callback_data="test")],
@@ -148,9 +148,12 @@ async def echo_handler(message: types.Message):
 async def callbacks_num(callback: types.CallbackQuery):
     callback_data = callback.data.split("_")[1]
 
-    if callback_data == "minSpread":
-        await callback.answer()
-        await callback.message.edit_text(f"Вы нажали на кнопку {callback_data}")
+    if callback_data == "settings":
+        inlineKeyboard = getSettingsInlineKeyboard()
+
+    await callback.message.edit_reply_markup(
+        reply_markup=inlineKeyboard,
+    )
 
 
 async def start():
