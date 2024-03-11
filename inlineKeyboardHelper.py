@@ -1,4 +1,5 @@
 from aiogram import types
+from aiogram.utils.markdown import link
 
 
 def getHomeInlineKeyboard():
@@ -68,6 +69,20 @@ def getInlineKeyboardMinSpread():
 
 
 def getInlineKeyboardExchangeLists():
+    message = """
+    
+    1. [Binance](https://binance.com/)
+    2. [CommEX](https://accounts.commex.com/ru/register?ref=JY6HUB2A)
+    3. [Bitget](https://www.bitget.com/ru/referral/register?clacCode=G2C71BX7&from=%2Fru%2Fevents%2Freferral&source=events)
+    4. [Bybit](https://www.bybit.com/invite?ref=49MMR8)
+    5. [Gateio](https://www.gate.io/signup/AwREAwtW?ref_type=103)
+    6. [MEXC](https://www.mexc.com/register?inviteCode=121iiH)
+    7. [CoinEx](https://www.coinex.com/register?refer_code=9uqtv)
+    8. [Poloniex](https://poloniex.com/signup?c=MBKWMYY7)
+    9. [KuCoin](https://www.kucoin.com/r/rf/QBS7BEM5)
+    10. [OKX](https://www.okx.com/join/55523872)
+    11. [BitMart](https://www.bitmart.com/register-referral/en?r=VkvxNK)
+    """
     buttons = [
         [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
         [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
