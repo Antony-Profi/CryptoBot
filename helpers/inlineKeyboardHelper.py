@@ -1,4 +1,5 @@
 from aiogram import types
+from models.inlineKeyboardResponse import InlineKeyboardResponse
 
 
 def getHomeInlineKeyboard():
@@ -78,19 +79,23 @@ def getInlineKeyboardExchangeLists():
 def getInlineKeyboardForCallback(callback: types.CallbackQuery):
     callback_data = callback.data.split("_")[1]
 
-    if callback_data == "settings":
-        inlineKeyboard = getSettingsInlineKeyboard()
-    elif callback_data == "payments":
-        inlineKeyboard = getPaymentsInlineKeyboard()
-    elif callback_data == "trade":
-        inlineKeyboard = getTradeInlineKeyboard()
-    elif callback_data == "information":
-        inlineKeyboard = getInforamtionInlineKeyboard()
-    elif callback_data == "listOfExchanges":
-        inlineKeyboard = getInlineKeyboardExchangeLists()
-    elif callback_data == "minSpread":
-        inlineKeyboard = getInlineKeyboardMinSpread()
-    elif callback_data == "toTheBeginning":
-        inlineKeyboard = getHomeInlineKeyboard()
+    inlineKeyboardResponse = InlineKeyboardResponse();
 
-    return inlineKeyboard
+    if callback_data == "settings":
+        inlineKeyboardResponse.reponseText = "Настройки";
+        inlineKeyboardResponse.inlineKeyboard = getSettingsInlineKeyboard()
+    elif callback_data == "payments":
+        inlineKeyboardResponse.inlineKeyboard = getPaymentsInlineKeyboard()
+    elif callback_data == "trade":
+        inlineKeyboardResponse.inlineKeyboard = getTradeInlineKeyboard()
+    elif callback_data == "information":
+        inlineKeyboardResponse.inlineKeyboard = getInforamtionInlineKeyboard()
+    elif callback_data == "listOfExchanges":
+        inlineKeyboardResponse.inlineKeyboard = getInlineKeyboardExchangeLists()
+    elif callback_data == "minSpread":
+        inlineKeyboardResponse.reponseText = "Выберите минимальный спред для получения актуальных связок:";
+        inlineKeyboardResponse.inlineKeyboard = getInlineKeyboardMinSpread()
+    elif callback_data == "toTheBeginning":
+        inlineKeyboardResponse.inlineKeyboard = getHomeInlineKeyboard()
+
+    return inlineKeyboardResponse

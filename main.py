@@ -9,11 +9,13 @@ from aiogram.utils.keyboard import \
     KeyboardButton, \
     ReplyKeyboardMarkup
 
-from replyKeyboardHelper import getHomeReplyKeyboard
-from inlineKeyboardHelper import \
+from helpers.replyKeyboardHelper import getHomeReplyKeyboard
+from helpers.inlineKeyboardHelper import \
     getInlineKeyboardForCallback, \
     getHomeInlineKeyboard, \
     getSettingsInlineKeyboard
+
+from binance.client import Client
 
 
 TOKEN = "6769635335:AAHnLfxRzsJh7RnSFkcHgDzxnSDeckC4XaA"
@@ -49,11 +51,11 @@ async def echo_handler(message: types.Message):
 
 @dp.callback_query(F.data.startswith("keyboard_"))
 async def callbacks_num(callback: types.CallbackQuery):
-    inlineKeyboard = getInlineKeyboardForCallback(callback)
+    inlineKeyboardResponse = getInlineKeyboardForCallback(callback)
 
     await callback.message.answer(
-        text="Ответ",
-        reply_markup=inlineKeyboard,
+        text=inlineKeyboardResponse.reponseText,
+        reply_markup=inlineKeyboardResponse.inlineKeyboard,
     )
 
 
@@ -66,5 +68,10 @@ async def start():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    asyncio.run(start())
+    # logging.basicConfig(level=logging.INFO)
+    # asyncio.run(start())
+    
+    client = Client();
+    info = client.futures_mark_price()
+
+    print(info)
