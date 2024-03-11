@@ -1,5 +1,6 @@
 from aiogram import types
 
+
 def getHomeInlineKeyboard():
     buttons = [
         [types.InlineKeyboardButton(text="⚙️ Настройки", callback_data="keyboard_settings"),
@@ -41,8 +42,33 @@ def getTradeInlineKeyboard():
 
 def getInforamtionInlineKeyboard():
     buttons = [
-        [types.InlineKeyboardButton(text="🏦 Список бирж", callback_data="keyboard_listOf_exchanges")],
+        [types.InlineKeyboardButton(text="🏦 Список бирж", callback_data="keyboard_listOfExchanges")],
         [types.InlineKeyboardButton(text="🆘 Помощь", callback_data="keyboard_help")],
+        [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
+        [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def getInlineKeyboardMinSpread():
+    buttons = [
+        [types.InlineKeyboardButton(text="0.1%", callback_data="keyboard_listPercent"),
+         types.InlineKeyboardButton(text="0.2%", callback_data="keyboard_listPercent"),
+         types.InlineKeyboardButton(text="0.3%", callback_data="keyboard_listPercent")],
+        [types.InlineKeyboardButton(text="0.4%", callback_data="keyboard_listPercent"),
+         types.InlineKeyboardButton(text="0.5%", callback_data="keyboard_listPercent"),
+         types.InlineKeyboardButton(text="0.6%", callback_data="keyboard_listPercent")],
+        [types.InlineKeyboardButton(text="0.7%", callback_data="keyboard_listPercent"),
+         types.InlineKeyboardButton(text="0.8%", callback_data="keyboard_listPercent"),
+         types.InlineKeyboardButton(text="0.9%", callback_data="keyboard_listPercent")],
+        [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
+        [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def getInlineKeyboardExchangeLists():
+    buttons = [
         [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
         [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
     ]
@@ -60,6 +86,10 @@ def getInlineKeyboardForCallback(callback: types.CallbackQuery):
         inlineKeyboard = getTradeInlineKeyboard()
     elif callback_data == "information":
         inlineKeyboard = getInforamtionInlineKeyboard()
+    elif callback_data == "listOfExchanges":
+        inlineKeyboard = getInlineKeyboardExchangeLists()
+    elif callback_data == "minSpread":
+        inlineKeyboard = getInlineKeyboardMinSpread()
     elif callback_data == "toTheBeginning":
         inlineKeyboard = getHomeInlineKeyboard()
 
