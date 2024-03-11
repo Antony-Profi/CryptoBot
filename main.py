@@ -6,20 +6,24 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from aiogram.utils.keyboard import \
-    KeyboardButton, \
     ReplyKeyboardMarkup
 
 from helpers.replyKeyboardHelper import getHomeReplyKeyboard
 from helpers.inlineKeyboardHelper import \
     getInlineKeyboardForCallback, \
-    getHomeInlineKeyboard, \
-    getSettingsInlineKeyboard
+    getHomeInlineKeyboard
 
 from binance.client import Client
+
+import threading
+
+from models.brokerData import BrokerData
+from services.fetchDataWorker import start as startFetching
 
 
 TOKEN = "6769635335:AAHnLfxRzsJh7RnSFkcHgDzxnSDeckC4XaA"
 dp = Dispatcher()
+global brokerData
 
 
 @dp.message(CommandStart())
@@ -66,12 +70,8 @@ async def start():
     )
     await dp.start_polling(bot)
 
-
 if __name__ == "__main__":
     # logging.basicConfig(level=logging.INFO)
     # asyncio.run(start())
-    
-    client = Client();
-    info = client.futures_mark_price()
-
-    print(info)
+    brokerData = BrokerData()
+    startFetching(10, brokerData)
