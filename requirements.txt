@@ -15,4 +15,6 @@ pydantic==2.3.0
 pydantic_core==2.6.3
 typing_extensions==4.7.1
 python-binance==1.0.19
+ccxt==4.2.68
+python-bitget==1.0.7
 yarl==1.9.2
