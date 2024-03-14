@@ -4,7 +4,7 @@ class BrokerData:
     bitgetData = {}
     bybitData = {}
     gateioData = {}
-    mexc = {}
+    mexcData = {}
     coinexData = {}
     poloniexData = {}
     kucoinData = {}
