@@ -47,20 +47,3 @@ def get_contracts_data():
         # Ошибка при получении данных
         print(f"Ошибка: {response.status_code}")
         return None
-
-
-# Пример использования функции
-while True:
-    contracts_info = get_contracts_data()
-
-    if contracts_info is not None:
-        # Обработка полученной информации
-        for contract_info in contracts_info:
-            print(contract_info)
-            print()
-
-        time.sleep(10)
-
-    else:
-        # Ошибка при получении данных
-        break

@@ -53,11 +53,11 @@ def fetch_funding_rates():
         print(f"Ошибка: {response.status_code}")
 
 
-# Пример использования
-funding_rates = fetch_funding_rates()
+# # Пример использования
+# funding_rates = fetch_funding_rates()
 
-for symbol, funding_rate, funding_time in funding_rates:
-    print(f"Символ: {symbol}")
-    print(f"Funding Rate: {funding_rate}")
-    print(f"Funding Time: {funding_time}")
-    print()
+# for symbol, funding_rate, funding_time in funding_rates:
+#     print(f"Символ: {symbol}")
+#     print(f"Funding Rate: {funding_rate}")
+#     print(f"Funding Time: {funding_time}")
+#     print()
