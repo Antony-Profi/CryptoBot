@@ -17,7 +17,6 @@ from binance.client import Client
 
 import ccxt
 
-
 from models.brokerData import BrokerData
 from services.fetchDataWorker import start as startFetching
 
@@ -73,31 +72,29 @@ async def start():
 
 if __name__ == "__main__":
 
-    mexc   = ccxt.mexc()
-    # coinex   = ccxt.coinex()
-    # gateio   = ccxt.gateio()
-    bitget   = ccxt.bitget()
-    # binance   = ccxt.binance()
-    # bybit   = ccxt.bybit()
-    
-    okx   = ccxt.okx()
-    bitmart   = ccxt.bitmart()
+    # mexc = ccxt.mexc()
+    # coinex = ccxt.coinex()
+    # gateio = ccxt.gateio()
+    # bitget = ccxt.bitget()
+    # binance = ccxt.binance()
+    # bybit = ccxt.bybit()
+    # okx = ccxt.okx()
+    # bitmart = ccxt.bitmart()
 
-    
 
-    # poloniex   = ccxt.poloniex() not working
-    # kucoin   = ccxt.kucoin() not working
+    # poloniex = ccxt.poloniex() not working
+    # kucoin = ccxt.kucoin() not working
 
-    binance_funding_rates = bybit.fetch_funding_rates()
-
-    mexc_funding_rates = []
+    # binance_funding_rates = mexc.fetch_funding_rates()
+    #
+    # mexc_funding_rates = []
 
     # print(binance_funding_rates.keys())
 
-    print(len(binance_funding_rates))
-
+    # print(len(binance_funding_rates))
+    #
     # for funding_rate_key in binance_funding_rates.keys():
-    #     try: 
+    #     try:
     #         mexc_funding_rate = mexc.fetch_funding_rate(funding_rate_key)
     #         print(mexc_funding_rate)
     #         mexc_funding_rates.append(mexc.fetch_funding_rate(funding_rate_key))
@@ -105,10 +102,7 @@ if __name__ == "__main__":
     #         continue
 
 
-
-    
-
     # logging.basicConfig(level=logging.INFO)
     # asyncio.run(start())
-    # brokerData = BrokerData()
-    # startFetching(10, brokerData)
+    brokerData = BrokerData()
+    startFetching(10, brokerData)

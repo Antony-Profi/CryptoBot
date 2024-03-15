@@ -1,27 +1,20 @@
-import requests
-from time import sleep
+import ccxt
 
-# Update based on Bitget API documentation
-symbol = "BTCUSDT_UMCBL"
 
-while True:
-    # Try using an alternative endpoint
-    url = f"https://api.bitget.com/api/mix/v1/market/futures_mark_price?symbol={symbol}"
-    response = requests.get(url)
+def fetchData():
+    binance = ccxt.binance()
+    bitget = ccxt.bitget()
 
-    # Check response status and data
-    if response.status_code == 200:
+    binance_funding_rates = binance.fetch_funding_rates()
+    bitget_funding_rates = []
+
+    print("BINANCE\n", binance_funding_rates.keys())
+
+    for funding_rate_key in binance_funding_rates.keys():
         try:
-            data = response.json()
-            funding_rate = data.get("fundingRate")  # Use get() to avoid potential KeyError
-            if funding_rate:
-                print(f"Funding Rate: {funding_rate}")
-        except (KeyError, AttributeError):
-            print("Error: 'fundingRate' key not found in response data.")
-    else:
-        print(f"Error: {response.status_code}")
-        # Additional checks:
-        print(f"Response content: {response.text}")  # Print the full response for debugging
-
-    sleep(60)
-
+            bitget_funding_rate = bitget.fetch_funding_rate(funding_rate_key)
+            print("BITGET\n", bitget_funding_rate)
+            bitget_funding_rates.append(bitget.fetch_funding_rate(funding_rate_key))
+        except:
+            continue
+    return binance_funding_rates, bitget_funding_rates
