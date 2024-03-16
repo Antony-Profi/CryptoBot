@@ -1,30 +1,16 @@
-import requests
-import time
+import ccxt
 
 
-def get_contracts_data():
-    url = "https://api.gateio.ws/api/v4/futures/usdt/contracts?limit=100"
+def fetchData():
+    gateio = ccxt.gateio()
 
-    headers = {
-        "Timestamp": str(int(time.time() * 1000)),  # Временная метка в миллисекундах
-    }
+    gateio_funding_rates = gateio.fetch_funding_rates()
+    # gateio_funding_rates = []
 
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
-        data = response.json()
-        contracts_info = []
-
-        for contract in data:
-            contract_info = [
-                contract['funding_rate'],
-                contract['config_change_time'],
-                contract['create_time'],
-            ]
-
-            contracts_info.append(contract_info)
-        return contracts_info
-
-    else:
-        print(f"Ошибка: {response.status_code}")
-        return None
+    for funding_rate_key in gateio_funding_rates.keys():
+        try:
+            gateio_funding_rate = gateio.fetch_funding_rate(funding_rate_key)
+            gateio_funding_rates.append(gateio_funding_rate)
+        except:
+            continue
+    return gateio_funding_rates

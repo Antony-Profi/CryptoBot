@@ -1,6 +1,24 @@
-# import threading
-#
+import ccxt
+
+
+def fetchData():
+    comex = ccxt.comex()
+
+    comex_funding_rates = comex.fetch_funding_rates()
+    # comex_funding_rates = []
+
+    for funding_rate_key in comex_funding_rates.keys():
+        try:
+            comex_funding_rate = comex.fetch_funding_rate(funding_rate_key)
+            comex_funding_rates.append(comex_funding_rate)
+        except:
+            continue
+    return comex_funding_rates
+
+
+
 # import requests
+# from datetime import datetime
 #
 #
 # def fetch_funding_rates():
@@ -16,41 +34,16 @@
 #         for item in data:
 #             symbol = item['symbol']
 #             funding_rate = item['fundingRate']
+#             funding_time = item['fundingTime']
 #
-#             funding_rates.append((symbol, funding_rate))  # Добавление элементов в список
+#             # Преобразование timestamp в читаемый формат
+#             funding_time_str = datetime.fromtimestamp(funding_time / 1000).isoformat()
+#
+#             funding_rates.append((symbol, funding_rate, funding_time_str))  # Добавление элементов в список
 #
 #         return funding_rates
 #     else:
 #         print(f"Ошибка: {response.status_code}")
-
-
-import requests
-from datetime import datetime
-
-
-def fetch_funding_rates():
-    url = "https://api.commex.com/fapi/v1/fundingRate?limit=1000"
-
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        data = response.json()
-
-        funding_rates = []  # Создание пустого списка
-
-        for item in data:
-            symbol = item['symbol']
-            funding_rate = item['fundingRate']
-            funding_time = item['fundingTime']
-
-            # Преобразование timestamp в читаемый формат
-            funding_time_str = datetime.fromtimestamp(funding_time / 1000).isoformat()
-
-            funding_rates.append((symbol, funding_rate, funding_time_str))  # Добавление элементов в список
-
-        return funding_rates
-    else:
-        print(f"Ошибка: {response.status_code}")
 
 
 # # Пример использования
