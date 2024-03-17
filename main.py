@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import logging
 
 from aiogram import Bot, F, Dispatcher, types
@@ -24,7 +25,6 @@ from services.fetchDataWorker import start as startFetching
 TOKEN = "6769635335:AAHnLfxRzsJh7RnSFkcHgDzxnSDeckC4XaA"
 dp = Dispatcher()
 global brokerData
-
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message):
@@ -74,5 +74,6 @@ async def start():
 if __name__ == "__main__":
     # logging.basicConfig(level=logging.INFO)
     # asyncio.run(start())
+
     brokerData = BrokerData()
-    startFetching(300, brokerData)
+    startFetching(120, brokerData)

@@ -12,6 +12,8 @@ from multiprocessing import Process
 
 import threading
 
+global brokerData
+
 
 def runInParallel(*fns):
   proc = []
@@ -22,26 +24,19 @@ def runInParallel(*fns):
   for p in proc:
     p.join()
 
+  return p
+
 
 def start(timeout: int, brokerData: BrokerData):
-    runInParallel(fetchBinanceData(brokerData.binanceData),
-                  fetchComexData(brokerData.commexData),
-                  fetchBitgetData(brokerData.bitgetData),
-                  fetchBybitData(brokerData.bybitData),
-                  fetchGateioData(brokerData.gateioData),
-                  fetchMexcData(brokerData.mexcData),
-                  fetchCoinexData(brokerData.coinexData),
-                  fetchOkxData(brokerData.okxData),
-                  fetchBitmartData(brokerData.bitmartData))
+    runInParallel(fetchBinanceData(brokerData),
+                  fetchBybitData(brokerData),
+                  fetchGateioData(brokerData))
+    
 
-    print("Binance", brokerData.binanceData)
-    print("Comex", brokerData.commexData)
-    print("Bitget", brokerData.bitgetData)
-    print("Bybit", brokerData.bybitData)
-    print("Gateio", brokerData.gateioData)
-    print("Mexc", brokerData.mexcData)
-    print("Coinex", brokerData.coinexData)
-    print("Okx", brokerData.okxData)
-    print("Bitmart", brokerData.bitmartData)
+    # print("Binance", brokerData.binanceData)
+    # print("Bybit", brokerData.bybitData)
+    # print("Gateio", brokerData.gateioData)
+
+    print(brokerData.binanceData[0])
 
     threading.Timer(timeout, start, [timeout, brokerData]).start()
