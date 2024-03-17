@@ -1,17 +1,29 @@
 import ccxt
+from enums import broker
+from enums.broker import Broker
+from constans import OKX
 
 
 def fetchData():
     binance = ccxt.binance()
     okx = ccxt.okx()
 
-    binance_funding_rates = binance.fetch_funding_rates()
-    okx_funding_rates = []
+    okx_funding_rates = binance.fetch_funding_rates()
 
-    for funding_rate_key in binance_funding_rates.keys():
-        try:
-            okx_funding_rate = okx.fetch_funding_rate(funding_rate_key)
-            okx_funding_rates.append(okx_funding_rate)
-        except:
-            continue
-    return okx_funding_rates
+    formatted_okx_funding_rates = []
+
+    for okx_funding_rate in okx_funding_rates.values():
+        # print(bybit_funding_rates)
+        formatted_okx_funding_rate = {
+            broker: OKX,
+            "symbol": okx_funding_rate["symbol"],
+            "fundingRate": okx_funding_rate["fundingRate"],
+            "fundingDatetime": okx_funding_rate["fundingDatetime"]
+        }
+        formatted_okx_funding_rates.append(formatted_okx_funding_rate)
+
+    return formatted_okx_funding_rates
+
+
+data = fetchData()
+print(data)

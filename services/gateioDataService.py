@@ -1,16 +1,28 @@
 import ccxt
+from enums import broker
+from enums.broker import Broker
+from constans import GATEIO
 
 
 def fetchData():
     gateio = ccxt.gateio()
 
     gateio_funding_rates = gateio.fetch_funding_rates()
-    # gateio_funding_rates = []
 
-    for funding_rate_key in gateio_funding_rates.keys():
-        try:
-            gateio_funding_rate = gateio.fetch_funding_rate(funding_rate_key)
-            gateio_funding_rates.append(gateio_funding_rate)
-        except:
-            continue
-    return gateio_funding_rates
+    formatted_gateio_funding_rates = []
+
+    for gateio_funding_rate in gateio_funding_rates.values():
+        # print(bybit_funding_rates)
+        formatted_gateio_funding_rate = {
+            broker: GATEIO,
+            "symbol": gateio_funding_rate["symbol"],
+            "fundingRate": gateio_funding_rate["fundingRate"],
+            "fundingDatetime": gateio_funding_rate["fundingDatetime"]
+        }
+        formatted_gateio_funding_rates.append(formatted_gateio_funding_rate)
+
+    return formatted_gateio_funding_rates
+
+
+data = fetchData()
+print(data)
