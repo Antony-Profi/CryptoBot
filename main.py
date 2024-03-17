@@ -70,8 +70,9 @@ async def start():
     )
     await dp.start_polling(bot)
 
+
 if __name__ == "__main__":
     # logging.basicConfig(level=logging.INFO)
     # asyncio.run(start())
     brokerData = BrokerData()
-    startFetching(10, brokerData)
+    startFetching(300, brokerData)

@@ -4,7 +4,7 @@ from enums.broker import Broker
 from constans import GATEIO
 
 
-def fetchData():
+def fetchData(gateioData):
     gateio = ccxt.gateio()
 
     gateio_funding_rates = gateio.fetch_funding_rates()
@@ -21,8 +21,4 @@ def fetchData():
         }
         formatted_gateio_funding_rates.append(formatted_gateio_funding_rate)
 
-    return formatted_gateio_funding_rates
-
-
-data = fetchData()
-print(data)
+    gateioData = formatted_gateio_funding_rates

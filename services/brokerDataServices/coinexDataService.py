@@ -4,7 +4,7 @@ from enums.broker import Broker
 from constans import COINEX
 
 
-def fetchData():
+def fetchData(coinexData):
     coinex = ccxt.coinex()
 
     coinex_funding_rates = coinex.fetch_funding_rates()
@@ -12,7 +12,6 @@ def fetchData():
     formatted_coinex_funding_rates = []
 
     for coinex_funding_rate in coinex_funding_rates.values():
-        # print(bybit_funding_rates)
         formatted_coinex_funding_rate = {
             broker: COINEX,
             "symbol": coinex_funding_rate["symbol"],
@@ -21,9 +20,4 @@ def fetchData():
         }
         formatted_coinex_funding_rates.append(formatted_coinex_funding_rate)
 
-    return formatted_coinex_funding_rates
-
-
-data = fetchData()
-print(data)
-
+    coinexData = formatted_coinex_funding_rates

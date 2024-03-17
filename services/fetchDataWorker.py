@@ -1,30 +1,41 @@
 from models.brokerData import BrokerData
-from services.binanceDataService import fetchData as fetchBinanceData
-from services.comexDataService import fetchData as fetchComexData
-from services.bitgetDataService import fetchData as fetchBitgetData
-from services.bybitDataService import fetchData as fetchBybitData
-from services.gateioDataService import fetchData as fetchGateioData
-from services.mexcDataService import fetchData as fetchMexcData
-from services.coinexDataService import fetchData as fetchCoinexData
-from services.okxDataService import fetchData as fetchOkxData
-from services.bitmartDataService import fetchData as fetchBitmartData
+from services.brokerDataServices.binanceDataService import fetchData as fetchBinanceData
+from services.brokerDataServices.commexDataService import fetchData as fetchComexData
+from services.brokerDataServices.bitgetDataService import fetchData as fetchBitgetData
+from services.brokerDataServices.bybitDataService import fetchData as fetchBybitData
+from services.brokerDataServices.gateioDataService import fetchData as fetchGateioData
+from services.brokerDataServices.mexcDataService import fetchData as fetchMexcData
+from services.brokerDataServices.coinexDataService import fetchData as fetchCoinexData
+from services.brokerDataServices.okxDataService import fetchData as fetchOkxData
+from services.brokerDataServices.bitmartDataService import fetchData as fetchBitmartData
+from multiprocessing import Process
 
 import threading
 
 
+def runInParallel(*fns):
+  proc = []
+  for fn in fns:
+    p = Process(target=fn)
+    p.start()
+    proc.append(p)
+  for p in proc:
+    p.join()
+
+
 def start(timeout: int, brokerData: BrokerData):
-    brokerData.binanceData = fetchBinanceData()
-    brokerData.comexData = fetchComexData()
-    brokerData.bitgetData = fetchBitgetData()
-    brokerData.bybitData = fetchBybitData()
-    brokerData.gateioData = fetchGateioData()
-    brokerData.mexcData = fetchMexcData()
-    brokerData.coinexData = fetchCoinexData()
-    brokerData.okxData = fetchOkxData()
-    brokerData.bitmartData = fetchBitmartData()
+    runInParallel(fetchBinanceData(brokerData.binanceData),
+                  fetchComexData(brokerData.commexData),
+                  fetchBitgetData(brokerData.bitgetData),
+                  fetchBybitData(brokerData.bybitData),
+                  fetchGateioData(brokerData.gateioData),
+                  fetchMexcData(brokerData.mexcData),
+                  fetchCoinexData(brokerData.coinexData),
+                  fetchOkxData(brokerData.okxData),
+                  fetchBitmartData(brokerData.bitmartData))
 
     print("Binance", brokerData.binanceData)
-    print("Comex", brokerData.comexData)
+    print("Comex", brokerData.commexData)
     print("Bitget", brokerData.bitgetData)
     print("Bybit", brokerData.bybitData)
     print("Gateio", brokerData.gateioData)

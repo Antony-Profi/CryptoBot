@@ -4,7 +4,7 @@ from enums.broker import Broker
 from constans import BINANCE
 
 
-def fetchData():
+def fetchData(binanceData):
     binance = ccxt.binance()
 
     binance_funding_rates = binance.fetch_funding_rates()
@@ -21,8 +21,4 @@ def fetchData():
         }
         formatted_binance_funding_rates.append(formatted_binance_funding_rate)
 
-    return formatted_binance_funding_rates
-
-
-data = fetchData()
-print(data)
+    binanceData = formatted_binance_funding_rates

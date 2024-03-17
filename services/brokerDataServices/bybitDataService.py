@@ -4,7 +4,7 @@ from enums.broker import Broker
 from constans import BYBIT
 
 
-def fetchData():
+def fetchData(bybitData):
     bybit = ccxt.bybit()
 
     bybit_funding_rates = bybit.fetch_funding_rates()
@@ -12,7 +12,6 @@ def fetchData():
     formatted_bybit_funding_rates = []
 
     for bybit_funding_rate in bybit_funding_rates.values():
-        # print(bybit_funding_rates)
         formatted_bybit_funding_rate = {
             broker: BYBIT,
             "symbol": bybit_funding_rate["symbol"],
@@ -21,8 +20,4 @@ def fetchData():
         }
         formatted_bybit_funding_rates.append(formatted_bybit_funding_rate)
 
-    return formatted_bybit_funding_rates
-
-
-data = fetchData()
-print(data)
+    bybitData = formatted_bybit_funding_rates

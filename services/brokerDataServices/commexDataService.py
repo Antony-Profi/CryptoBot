@@ -2,7 +2,7 @@ import requests
 from datetime import datetime
 
 
-def fetchData():
+def fetchData(commexData):
     url = "https://api.commex.com/fapi/v1/fundingRate?limit=1000"
 
     response = requests.get(url)
@@ -21,15 +21,15 @@ def fetchData():
 
             funding_rates.append((symbol, funding_rate, funding_time_str))
 
-        return funding_rates
+        commexData = funding_rates
     else:
         print(f"Ошибка: {response.status_code}")
 
 
-funding_rates = fetchData()
-
-for symbol, funding_rate, funding_time in funding_rates:
-    print(f"Символ: {symbol}")
-    print(f"Funding Rate: {funding_rate}")
-    print(f"Funding Time: {funding_time}")
-    print()
+# funding_rates = fetchData()
+#
+# for symbol, funding_rate, funding_time in funding_rates:
+#     print(f"Символ: {symbol}")
+#     print(f"Funding Rate: {funding_rate}")
+#     print(f"Funding Time: {funding_time}")
+#     print()
