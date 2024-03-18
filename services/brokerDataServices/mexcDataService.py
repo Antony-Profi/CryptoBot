@@ -2,9 +2,10 @@ import ccxt
 from enums import broker
 from enums.broker import Broker
 from constans import MEXC
+from helpers.dateHelper import getHoursDifferenceWithCurrentDateTime
 
 
-def fetchData(mexcData):
+def fetchData(brokerData):
     binance = ccxt.binance()
     mexc = ccxt.mexc()
 
@@ -19,9 +20,14 @@ def fetchData(mexcData):
                 broker: MEXC,
                 "symbol": mexc_funding_rate["symbol"],
                 "fundingRate": mexc_funding_rate["fundingRate"],
-                "fundingDatetime": mexc_funding_rate["fundingDatetime"]
+                "fundingDatetime": mexc_funding_rate["fundingDatetime"],
+                "hoursLeft": getHoursDifferenceWithCurrentDateTime(mexc_funding_rate["fundingDatetime"]),
+                "fundingRatePerHourRatio":
+                    mexc_funding_rate["fundingRate"] / getHoursDifferenceWithCurrentDateTime(
+                        mexc_funding_rate["fundingDatetime"]
+                    )
             }
             formatted_mexc_funding_rates.append(formatted_mexc_funding_rate)
         except:
             continue
-    mexcData = formatted_mexc_funding_rates
+    brokerData.mexcData = formatted_mexc_funding_rates

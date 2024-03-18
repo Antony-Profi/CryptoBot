@@ -2,7 +2,7 @@ import requests
 from datetime import datetime
 
 
-def fetchData(commexData):
+def fetchData(brokerData):
     url = "https://api.commex.com/fapi/v1/fundingRate?limit=1000"
 
     response = requests.get(url)
@@ -21,7 +21,7 @@ def fetchData(commexData):
 
             funding_rates.append((symbol, funding_rate, funding_time_str))
 
-        commexData = funding_rates
+        brokerData.commexData = funding_rates
     else:
         print(f"Ошибка: {response.status_code}")
 

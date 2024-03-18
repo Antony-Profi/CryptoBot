@@ -20,7 +20,10 @@ def fetchData(brokerData):
             "fundingRate": binance_funding_rate["fundingRate"],
             "fundingDatetime": binance_funding_rate["fundingDatetime"],
             "hoursLeft": getHoursDifferenceWithCurrentDateTime(binance_funding_rate["fundingDatetime"]),
-            "fundingRatePerHourRatio": binance_funding_rate["fundingRate"] / getHoursDifferenceWithCurrentDateTime(binance_funding_rate["fundingDatetime"])
+            "fundingRatePerHourRatio":
+                binance_funding_rate["fundingRate"] / getHoursDifferenceWithCurrentDateTime(
+                    binance_funding_rate["fundingDatetime"]
+                )
         }
         formatted_binance_funding_rates.append(formatted_binance_funding_rate)
 

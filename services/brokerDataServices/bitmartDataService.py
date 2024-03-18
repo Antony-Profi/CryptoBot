@@ -2,9 +2,10 @@ import ccxt
 from enums import broker
 from enums.broker import Broker
 from constans import BITMART
+from helpers.dateHelper import getHoursDifferenceWithCurrentDateTime
 
 
-def fetchData(bitmartData):
+def fetchData(brokerData):
     binance = ccxt.binance()
     bitmart = ccxt.bitmart()
 
@@ -19,9 +20,14 @@ def fetchData(bitmartData):
                 broker: BITMART,
                 "symbol": bitmart_funding_rate["symbol"],
                 "fundingRate": bitmart_funding_rate["fundingRate"],
-                "fundingDatetime": bitmart_funding_rate["fundingDatetime"]
+                "fundingDatetime": bitmart_funding_rate["fundingDatetime"],
+                "hoursLeft": getHoursDifferenceWithCurrentDateTime(bitmart_funding_rate["fundingDatetime"]),
+                "fundingRatePerHourRatio":
+                    bitmart_funding_rate["fundingRate"] / getHoursDifferenceWithCurrentDateTime(
+                        bitmart_funding_rate["fundingDatetime"]
+                    )
             }
             formatted_bitmart_funding_rates.append(formatted_bitmart_funding_rate)
         except:
             continue
-    bitmartData = formatted_bitmart_funding_rates
+    brokerData.bitmartData = formatted_bitmart_funding_rates

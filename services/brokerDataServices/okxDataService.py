@@ -2,9 +2,10 @@ import ccxt
 from enums import broker
 from enums.broker import Broker
 from constans import OKX
+from helpers.dateHelper import getHoursDifferenceWithCurrentDateTime
 
 
-def fetchData(okxData):
+def fetchData(brokerData):
     binance = ccxt.binance()
     okx = ccxt.okx()
 
@@ -19,9 +20,14 @@ def fetchData(okxData):
                 broker: OKX,
                 "symbol": okx_funding_rate["symbol"],
                 "fundingRate": okx_funding_rate["fundingRate"],
-                "fundingDatetime": okx_funding_rate["fundingDatetime"]
+                "fundingDatetime": okx_funding_rate["fundingDatetime"],
+                "hoursLeft": getHoursDifferenceWithCurrentDateTime(okx_funding_rate["fundingDatetime"]),
+                "fundingRatePerHourRatio":
+                    okx_funding_rate["fundingRate"] / getHoursDifferenceWithCurrentDateTime(
+                        okx_funding_rate["fundingDatetime"]
+                    )
             }
             formatted_okx_funding_rates.append(formatted_okx_funding_rate)
         except:
             continue
-    okxData = formatted_okx_funding_rates
+    brokerData.okxData = formatted_okx_funding_rates

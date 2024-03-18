@@ -2,9 +2,10 @@ import ccxt
 from enums import broker
 from enums.broker import Broker
 from constans import COINEX
+from helpers.dateHelper import getHoursDifferenceWithCurrentDateTime
 
 
-def fetchData(coinexData):
+def fetchData(brokerData):
     coinex = ccxt.coinex()
 
     coinex_funding_rates = coinex.fetch_funding_rates()
@@ -16,8 +17,13 @@ def fetchData(coinexData):
             broker: COINEX,
             "symbol": coinex_funding_rate["symbol"],
             "fundingRate": coinex_funding_rate["fundingRate"],
-            "fundingDatetime": coinex_funding_rate["fundingDatetime"]
+            "fundingDatetime": coinex_funding_rate["fundingDatetime"],
+            "hoursLeft": getHoursDifferenceWithCurrentDateTime(coinex_funding_rate["fundingDatetime"]),
+            "fundingRatePerHourRatio":
+                coinex_funding_rate["fundingRate"] / getHoursDifferenceWithCurrentDateTime(
+                    coinex_funding_rate["fundingDatetime"]
+                )
         }
         formatted_coinex_funding_rates.append(formatted_coinex_funding_rate)
 
-    coinexData = formatted_coinex_funding_rates
+    brokerData.coinexData = formatted_coinex_funding_rates

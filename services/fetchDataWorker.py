@@ -1,6 +1,6 @@
 from models.brokerData import BrokerData
 from services.brokerDataServices.binanceDataService import fetchData as fetchBinanceData
-from services.brokerDataServices.commexDataService import fetchData as fetchComexData
+from services.brokerDataServices.commexDataService import fetchData as fetchCommexData
 from services.brokerDataServices.bitgetDataService import fetchData as fetchBitgetData
 from services.brokerDataServices.bybitDataService import fetchData as fetchBybitData
 from services.brokerDataServices.gateioDataService import fetchData as fetchGateioData
@@ -24,13 +24,19 @@ def runInParallel(*fns):
   for p in proc:
     p.join()
 
-  return p
+    return p
 
 
 def start(timeout: int, brokerData: BrokerData):
     runInParallel(fetchBinanceData(brokerData),
+                  fetchCommexData(brokerData),
+                  fetchBitgetData(brokerData),
                   fetchBybitData(brokerData),
-                  fetchGateioData(brokerData))
+                  fetchGateioData(brokerData),
+                  fetchMexcData(brokerData),
+                  fetchCoinexData(brokerData),
+                  fetchOkxData(brokerData),
+                  fetchBitmartData(brokerData))
     
 
     # print("Binance", brokerData.binanceData)
