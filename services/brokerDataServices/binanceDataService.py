@@ -19,12 +19,14 @@ def fetchData(brokerData):
             "symbol": binance_funding_rate["symbol"],
             "fundingRate": binance_funding_rate["fundingRate"],
             "fundingDatetime": binance_funding_rate["fundingDatetime"],
-            "hoursLeft": getHoursDifferenceWithCurrentDateTime(binance_funding_rate["fundingDatetime"]),
-            "fundingRatePerHourRatio":
-                binance_funding_rate["fundingRate"] / getHoursDifferenceWithCurrentDateTime(
-                    binance_funding_rate["fundingDatetime"]
-                )
+            "hoursLeft": getHoursDifferenceWithCurrentDateTime(binance_funding_rate["fundingDatetime"])
         }
+
+        if formatted_binance_funding_rate["hoursLeft"] >= 1:
+            formatted_binance_funding_rate["fundingRatePerHourRatio"] = formatted_binance_funding_rate["fundingRate"] / formatted_binance_funding_rate["hoursLeft"]
+        else:
+            formatted_binance_funding_rate["fundingRatePerHourRatio"] = 0
+            
         formatted_binance_funding_rates.append(formatted_binance_funding_rate)
 
     brokerData.binanceData = formatted_binance_funding_rates

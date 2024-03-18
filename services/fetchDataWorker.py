@@ -1,3 +1,4 @@
+from ast import Mod
 from models.brokerData import BrokerData
 from services.brokerDataServices.binanceDataService import fetchData as fetchBinanceData
 from services.brokerDataServices.commexDataService import fetchData as fetchCommexData
@@ -9,6 +10,8 @@ from services.brokerDataServices.coinexDataService import fetchData as fetchCoin
 from services.brokerDataServices.okxDataService import fetchData as fetchOkxData
 from services.brokerDataServices.bitmartDataService import fetchData as fetchBitmartData
 from multiprocessing import Process
+import pprint
+
 
 import threading
 
@@ -25,24 +28,65 @@ def runInParallel(*fns):
     p.join()
 
     return p
+  
+def getMaxSpreadBrokers(groupedBrokerData):
+  maxSpread = 0
+  maxSpreadBrokers = {}
 
+  if len(groupedBrokerData) > 1:
+
+    for firstBrokerData in groupedBrokerData:
+      for secondBrokerData in groupedBrokerData:
+        currentSpread = abs(firstBrokerData["fundingRatePerHourRatio"] - secondBrokerData["fundingRatePerHourRatio"])
+
+        if currentSpread > maxSpread:
+          maxSpread = currentSpread
+          maxSpreadBrokers = {
+            "symbol": firstBrokerData["symbol"],
+            "firstBroker": firstBrokerData["broker"],
+            "secondBroker": secondBrokerData["broker"],
+            "firstBrokerHoursLeft": firstBrokerData["hoursLeft"],
+            "secondBrokerHoursLeft": secondBrokerData["hoursLeft"],
+            "spread": currentSpread,
+          }
+
+    if maxSpread > 0:
+      return maxSpreadBrokers
+    else:
+      return None
+
+  else:
+    return None
+
+  
+def analyzeBrokerData(brokerData):
+  flattenBrokerData = brokerData.binanceData + brokerData.bybitData
+
+  groupedBrokerData = {}
+  for brokerSymbolData in flattenBrokerData:
+      t = groupedBrokerData.setdefault(brokerSymbolData['symbol'], [])
+      t.append(brokerSymbolData)
+
+  result = []
+
+  for symbol in groupedBrokerData.keys():
+    maxSpreadBrokers = getMaxSpreadBrokers(groupedBrokerData[symbol])
+
+    if maxSpreadBrokers != None:
+      result.append(maxSpreadBrokers)
+
+  
+  result.sort(key=lambda x: x["spread"], reverse=True)
+
+  with open('../result.txt', 'w') as file: 
+    file.write(pprint.pformat(result)) 
+  
+  print('done')
 
 def start(timeout: int, brokerData: BrokerData):
-    runInParallel(fetchBinanceData(brokerData),
-                  fetchCommexData(brokerData),
-                  fetchBitgetData(brokerData),
-                  fetchBybitData(brokerData),
-                  fetchGateioData(brokerData),
-                  fetchMexcData(brokerData),
-                  fetchCoinexData(brokerData),
-                  fetchOkxData(brokerData),
-                  fetchBitmartData(brokerData))
-    
-
-    # print("Binance", brokerData.binanceData)
-    # print("Bybit", brokerData.bybitData)
-    # print("Gateio", brokerData.gateioData)
-
-    print(brokerData.binanceData[0])
-
-    threading.Timer(timeout, start, [timeout, brokerData]).start()
+  runInParallel(fetchBinanceData(brokerData),
+                fetchBybitData(brokerData))
+  
+  result = analyzeBrokerData(brokerData)
+  
+  threading.Timer(timeout, start, [timeout, brokerData]).start()
