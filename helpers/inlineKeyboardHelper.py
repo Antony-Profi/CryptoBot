@@ -99,17 +99,22 @@ def getInlineKeyboardForCallback(callback: types.CallbackQuery):
         inlineKeyboardResponse.reponseText = "Настройки"
         inlineKeyboardResponse.inlineKeyboard = getSettingsInlineKeyboard()
     elif callback_data == "payments":
+        inlineKeyboardResponse.reponseText = "Оплата"
         inlineKeyboardResponse.inlineKeyboard = getPaymentsInlineKeyboard()
     elif callback_data == "trade":
+        inlineKeyboardResponse.reponseText = "Торговля"
         inlineKeyboardResponse.inlineKeyboard = getTradeInlineKeyboard()
     elif callback_data == "information":
+        inlineKeyboardResponse.reponseText = "Информация"
         inlineKeyboardResponse.inlineKeyboard = getInforamtionInlineKeyboard()
     elif callback_data == "listOfExchanges":
+        inlineKeyboardResponse.reponseText = "Список бирж"
         inlineKeyboardResponse.inlineKeyboard = getInlineKeyboardExchangeLists()
     elif callback_data == "minSpread":
         inlineKeyboardResponse.reponseText = "Выберите минимальный спред для получения актуальных связок:"
         inlineKeyboardResponse.inlineKeyboard = getInlineKeyboardMinSpread()
     elif callback_data == "toTheBeginning":
+        inlineKeyboardResponse.reponseText = "Главное меню"
         inlineKeyboardResponse.inlineKeyboard = getHomeInlineKeyboard()
 
     return inlineKeyboardResponse

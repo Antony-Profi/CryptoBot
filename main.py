@@ -12,7 +12,11 @@ from aiogram.utils.keyboard import \
 from helpers.replyKeyboardHelper import getHomeReplyKeyboard
 from helpers.inlineKeyboardHelper import \
     getInlineKeyboardForCallback, \
-    getHomeInlineKeyboard
+    getHomeInlineKeyboard, \
+    getSettingsInlineKeyboard, \
+    getPaymentsInlineKeyboard, \
+    getTradeInlineKeyboard, \
+    getInforamtionInlineKeyboard
 
 from binance.client import Client
 
@@ -35,7 +39,59 @@ async def command_start_handler(message: Message):
     markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
 
     await message.answer(
-        text="Меню",
+        text="Главное меню",
+        reply_markup=inlineKeyboard,
+    )
+
+
+@dp.message(Command("settings"))
+async def command_settings(message: Message):
+    keyboard = getHomeReplyKeyboard()
+    inlineKeyboard = getSettingsInlineKeyboard()
+
+    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
+
+    await message.answer(
+        text="Настройки",
+        reply_markup=inlineKeyboard,
+    )
+
+
+@dp.message(Command("payment"))
+async def command_payment(message: Message):
+    keyboard = getHomeReplyKeyboard()
+    inlineKeyboard = getPaymentsInlineKeyboard()
+
+    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
+
+    await message.answer(
+        text="Оплата",
+        reply_markup=inlineKeyboard,
+    )
+
+
+@dp.message(Command("deals"))
+async def command_trade(message: Message):
+    keyboard = getHomeReplyKeyboard()
+    inlineKeyboard = getTradeInlineKeyboard()
+
+    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
+
+    await message.answer(
+        text="Торговля",
+        reply_markup=inlineKeyboard,
+    )
+
+
+@dp.message(Command("info"))
+async def command_info(message: Message):
+    keyboard = getHomeReplyKeyboard()
+    inlineKeyboard = getInforamtionInlineKeyboard()
+
+    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
+
+    await message.answer(
+        text="Информация",
         reply_markup=inlineKeyboard,
     )
 
@@ -47,7 +103,7 @@ async def echo_handler(message: types.Message):
 
         markup = ReplyKeyboardMarkup(keyboard=inlineKeyboard, resize_keyboard=True)
         await message.answer(
-            text="Настройки",
+            text="test",
             reply_markup=markup,
         )
     except TypeError:
@@ -71,7 +127,6 @@ async def start():
     )
     await dp.start_polling(bot)
     
-
 
 if __name__ == "__main__":
     # logging.basicConfig(level=logging.INFO)

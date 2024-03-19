@@ -14,16 +14,19 @@ def fetchData(brokerData):
 
     for coinex_funding_rate in coinex_funding_rates.values():
         formatted_coinex_funding_rate = {
-            broker: COINEX,
+            "broker": COINEX,
             "symbol": coinex_funding_rate["symbol"],
             "fundingRate": coinex_funding_rate["fundingRate"],
             "fundingDatetime": coinex_funding_rate["fundingDatetime"],
-            "hoursLeft": getHoursDifferenceWithCurrentDateTime(coinex_funding_rate["fundingDatetime"]),
-            "fundingRatePerHourRatio":
-                coinex_funding_rate["fundingRate"] / getHoursDifferenceWithCurrentDateTime(
-                    coinex_funding_rate["fundingDatetime"]
-                )
+            "hoursLeft": getHoursDifferenceWithCurrentDateTime(coinex_funding_rate["fundingDatetime"])
         }
+
+        if formatted_coinex_funding_rate["hoursLeft"] >= 1:
+            formatted_coinex_funding_rate["fundingRatePerHourRatio"] = coinex_funding_rate["fundingRate"] / \
+                                                                      formatted_coinex_funding_rate["hoursLeft"]
+        else:
+            formatted_coinex_funding_rate["fundingRatePerHourRatio"] = 0
+
         formatted_coinex_funding_rates.append(formatted_coinex_funding_rate)
 
     brokerData.coinexData = formatted_coinex_funding_rates

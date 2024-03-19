@@ -28,7 +28,8 @@ def runInParallel(*fns):
     p.join()
 
     return p
-  
+
+
 def getMaxSpreadBrokers(groupedBrokerData):
   maxSpread = 0
   maxSpreadBrokers = {}
@@ -60,7 +61,11 @@ def getMaxSpreadBrokers(groupedBrokerData):
 
   
 def analyzeBrokerData(brokerData):
-  flattenBrokerData = brokerData.binanceData + brokerData.bybitData
+  flattenBrokerData = brokerData.binanceData\
+                      + brokerData.bybitData\
+                      + brokerData.coinexData\
+                      + brokerData.gateioData\
+                      + brokerData.bitgetData
 
   groupedBrokerData = {}
   for brokerSymbolData in flattenBrokerData:
@@ -75,7 +80,6 @@ def analyzeBrokerData(brokerData):
     if maxSpreadBrokers != None:
       result.append(maxSpreadBrokers)
 
-  
   result.sort(key=lambda x: x["spread"], reverse=True)
 
   with open('../result.txt', 'w') as file: 
@@ -83,10 +87,14 @@ def analyzeBrokerData(brokerData):
   
   print('done')
 
+
 def start(timeout: int, brokerData: BrokerData):
   runInParallel(fetchBinanceData(brokerData),
-                fetchBybitData(brokerData))
-  
+                fetchBybitData(brokerData),
+                fetchCoinexData(brokerData),
+                fetchGateioData(brokerData),
+                fetchBitgetData(brokerData))
+
   result = analyzeBrokerData(brokerData)
-  
+
   threading.Timer(timeout, start, [timeout, brokerData]).start()
