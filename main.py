@@ -129,8 +129,8 @@ async def start():
     
 
 if __name__ == "__main__":
-    # logging.basicConfig(level=logging.INFO)
-    # asyncio.run(start())
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(start())
 
     brokerData = BrokerData()
     startFetching(120, brokerData)

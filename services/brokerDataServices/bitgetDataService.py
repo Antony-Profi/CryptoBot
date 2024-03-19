@@ -5,7 +5,7 @@ from constans import BITGET
 from helpers.dateHelper import getHoursDifferenceWithCurrentDateTime
 
 
-def fetchData():
+def fetchData(brokerData):
     binance = ccxt.binance()
     bitget = ccxt.bitget()
 
@@ -15,8 +15,8 @@ def fetchData():
 
     for symbol in symbols:
         bitget_funding_rate = bitget.fetch_funding_rate(symbol)
-        print(bitget_funding_rate)
         try:
+
             formatted_bitget_funding_rate = {
                 "broker": BITGET,
                 "symbol": bitget_funding_rate["symbol"],
@@ -24,6 +24,7 @@ def fetchData():
                 "fundingDatetime": bitget_funding_rate["fundingDatetime"],
                 "hoursLeft": getHoursDifferenceWithCurrentDateTime(bitget_funding_rate["fundingDatetime"])
             }
+
             if formatted_bitget_funding_rate["hoursLeft"] >= 1:
                 formatted_bitget_funding_rate["fundingRatePerHourRatio"] = formatted_bitget_funding_rate[
                                                                                 "fundingRate"] / \
@@ -31,13 +32,9 @@ def fetchData():
             else:
                 formatted_bitget_funding_rate["fundingRatePerHourRatio"] = 0
 
-                formatted_bitget_funding_rates.append(formatted_bitget_funding_rate)
-                print(symbol)
+            formatted_bitget_funding_rates.append(formatted_bitget_funding_rate)
+
         except Exception as e:
             print("Error processing symbol:", symbol, "Error:", e)
 
-    bitgetData = formatted_bitget_funding_rates
-
-
-data = fetchData()
-print(data)
+    brokerData.bitgetData = formatted_bitget_funding_rates
