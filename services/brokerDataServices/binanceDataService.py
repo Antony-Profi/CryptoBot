@@ -13,7 +13,7 @@ def fetchData(brokerData):
 
     for binance_funding_rate in binance_funding_rates.values():
 
-        formatted_binance_funding_rate = BrokerFundingRate ()
+        formatted_binance_funding_rate = BrokerFundingRate()
         formatted_binance_funding_rate.broker = BINANCE
         formatted_binance_funding_rate.symbol = binance_funding_rate["symbol"]
         formatted_binance_funding_rate.fundingRate = binance_funding_rate["fundingRate"]

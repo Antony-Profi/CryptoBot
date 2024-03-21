@@ -1,6 +1,7 @@
 import ccxt
 from constans import BITGET
 from helpers.dateHelper import getTimeDifference
+from models.brokerFundingRate import BrokerFundingRate
 
 
 def fetchData(brokerData):
@@ -15,13 +16,12 @@ def fetchData(brokerData):
         bitget_funding_rate = bitget.fetch_funding_rate(symbol)
         try:
 
-            formatted_bitget_funding_rate = {
-                "broker": BITGET,
-                "symbol": bitget_funding_rate["symbol"],
-                "fundingRate": bitget_funding_rate["fundingRate"],
-                "fundingDatetime": bitget_funding_rate["fundingDatetime"],
-                "timeLeft": getTimeDifference(bitget_funding_rate["fundingDatetime"])
-            }
+            formatted_bitget_funding_rate = BrokerFundingRate()
+            formatted_bitget_funding_rate.broker = BITGET
+            formatted_bitget_funding_rate.symbol = bitget_funding_rate["symbol"]
+            formatted_bitget_funding_rate.fundingRate = bitget_funding_rate["fundingRate"]
+            formatted_bitget_funding_rate.fundingDatetime = bitget_funding_rate["fundingDatetime"]
+            formatted_bitget_funding_rate.timeLeft = getTimeDifference(bitget_funding_rate["fundingDatetime"])
 
             formatted_bitget_funding_rates.append(formatted_bitget_funding_rate)
 

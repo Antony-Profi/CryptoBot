@@ -1,6 +1,7 @@
 import ccxt
 from constans import BITMART
 from helpers.dateHelper import getTimeDifference
+from models.brokerFundingRate import BrokerFundingRate
 
 
 def fetchData(brokerData):
@@ -12,15 +13,16 @@ def fetchData(brokerData):
     formatted_bitmart_funding_rates = []
 
     for symbol in symbols:
+        bitmart_funding_rate = bitmart.fetch_funding_rate(symbol)
         try:
-            bitmart_funding_rate = bitmart.fetch_funding_rate(symbol)
-            formatted_bitmart_funding_rate = {
-                "broker": BITMART,
-                "symbol": bitmart_funding_rate["symbol"],
-                "fundingRate": bitmart_funding_rate["fundingRate"],
-                "fundingDatetime": bitmart_funding_rate["fundingDatetime"],
-                "timeLeft": getTimeDifference(bitmart_funding_rate["fundingDatetime"])
-            }
+
+            formatted_bitmart_funding_rate = BrokerFundingRate()
+            formatted_bitmart_funding_rate.broker = BITMART
+            formatted_bitmart_funding_rate.symbol = bitmart_funding_rate["symbol"]
+            formatted_bitmart_funding_rate.fundingRate = bitmart_funding_rate["fundingRate"]
+            formatted_bitmart_funding_rate.fundingDatetime = bitmart_funding_rate["fundingDatetime"]
+            formatted_bitmart_funding_rate.timeLeft = getTimeDifference(bitmart_funding_rate["fundingDatetime"])
+
             formatted_bitmart_funding_rates.append(formatted_bitmart_funding_rate)
         except:
             continue

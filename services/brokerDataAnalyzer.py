@@ -1,5 +1,5 @@
-
 import pprint
+
 
 def getMaxSpreadBrokers(groupedBrokerData):
   maxSpread = 0

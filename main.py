@@ -107,6 +107,7 @@ async def callbacks_num(callback: types.CallbackQuery):
             text=text,
         )
 
+
 async def start():
     bot = Bot(
         TOKEN,
@@ -122,4 +123,3 @@ if __name__ == "__main__":
 
     # logging.basicConfig(level=logging.INFO)
     # asyncio.run(start())
-

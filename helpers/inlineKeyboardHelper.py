@@ -109,6 +109,7 @@ def getInlineKeyboardForCallback(callback: types.CallbackQuery):
     elif callback_data == "toTheBeginning":
         return getHomeInlineKeyboard()
 
+
 def getResponseTextForCallback(callback: types.CallbackQuery, brokerData: BrokerData):
     callback_data = callback.data.split("_")[1]
 
