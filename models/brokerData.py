@@ -10,4 +10,5 @@ class BrokerData:
     kucoinData = {}
     okxData = {}
     bitmartData = {}
+    bunches = "No data available"
 

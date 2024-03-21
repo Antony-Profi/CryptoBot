@@ -36,6 +36,6 @@ def start(timeout: int, brokerData: BrokerData):
                 fetchCoinexData(brokerData),
                 fetchGateioData(brokerData))
 
-  result = analyzeBrokerData(brokerData)
+  brokerData.bunches = analyzeBrokerData(brokerData)
 
   threading.Timer(timeout, start, [timeout, brokerData]).start()

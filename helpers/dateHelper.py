@@ -1,7 +1,8 @@
 import datetime
 from dateutil import parser 
+import timedelta
 
+def getTimeDifference(isoStrDateTime):
+    delta = timedelta.Timedelta(parser.isoparse(isoStrDateTime) - datetime.datetime.now(datetime.timezone.utc))
+    return str(delta)
 
-def getHoursDifferenceWithCurrentDateTime(isoStrDateTime):
-    delta = (parser.isoparse(isoStrDateTime) - datetime.datetime.now(datetime.timezone.utc)).total_seconds()
-    return divmod(delta, 3600)[0]

@@ -1,6 +1,7 @@
 from aiogram import types
-from models.inlineKeyboardResponse import InlineKeyboardResponse
 
+from helpers.bunchFormatter import getBunchesFormattedString
+from models.brokerData import BrokerData
 
 def getHomeInlineKeyboard():
     buttons = [
@@ -32,7 +33,7 @@ def getPaymentsInlineKeyboard():
 
 def getTradeInlineKeyboard():
     buttons = [
-        [types.InlineKeyboardButton(text="📃 ТОП-20 процентных ставок", callback_data="keyboard_TOP-20_interest_rates")],
+        [types.InlineKeyboardButton(text="📃 ТОП-20 процентных ставок", callback_data="keyboard_TOP-20-interest-rates")],
         [types.InlineKeyboardButton(text="🔄️ Связки на Фьючерсах", callback_data="keyboard_Links_onFutures")],
         [types.InlineKeyboardButton(text="🔀 Связки на Фьючерсы-Спот", callback_data="keyboard_Bundles_onFutures-Spot")],
         [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
@@ -93,28 +94,37 @@ def getInlineKeyboardExchangeLists():
 def getInlineKeyboardForCallback(callback: types.CallbackQuery):
     callback_data = callback.data.split("_")[1]
 
-    inlineKeyboardResponse = InlineKeyboardResponse()
+    if callback_data == "settings":
+        return getSettingsInlineKeyboard()
+    elif callback_data == "payments":
+        return getPaymentsInlineKeyboard()
+    elif callback_data == "trade":
+        return getTradeInlineKeyboard()
+    elif callback_data == "information":
+        return getInforamtionInlineKeyboard()
+    elif callback_data == "listOfExchanges":
+        return getInlineKeyboardExchangeLists()
+    elif callback_data == "minSpread":
+        return getInlineKeyboardMinSpread()
+    elif callback_data == "toTheBeginning":
+        return getHomeInlineKeyboard()
+
+def getResponseTextForCallback(callback: types.CallbackQuery, brokerData: BrokerData):
+    callback_data = callback.data.split("_")[1]
 
     if callback_data == "settings":
-        inlineKeyboardResponse.reponseText = "Настройки"
-        inlineKeyboardResponse.inlineKeyboard = getSettingsInlineKeyboard()
+        return "Настройки"
     elif callback_data == "payments":
-        inlineKeyboardResponse.reponseText = "Оплата"
-        inlineKeyboardResponse.inlineKeyboard = getPaymentsInlineKeyboard()
+        return "Оплата"
     elif callback_data == "trade":
-        inlineKeyboardResponse.reponseText = "Торговля"
-        inlineKeyboardResponse.inlineKeyboard = getTradeInlineKeyboard()
+        return "Торговля"
     elif callback_data == "information":
-        inlineKeyboardResponse.reponseText = "Информация"
-        inlineKeyboardResponse.inlineKeyboard = getInforamtionInlineKeyboard()
+        return "Информация"
     elif callback_data == "listOfExchanges":
-        inlineKeyboardResponse.reponseText = "Список бирж"
-        inlineKeyboardResponse.inlineKeyboard = getInlineKeyboardExchangeLists()
+        return "Список бирж"
     elif callback_data == "minSpread":
-        inlineKeyboardResponse.reponseText = "Выберите минимальный спред для получения актуальных связок:"
-        inlineKeyboardResponse.inlineKeyboard = getInlineKeyboardMinSpread()
+        return "Выберите минимальный спред для получения актуальных связок:"
     elif callback_data == "toTheBeginning":
-        inlineKeyboardResponse.reponseText = "Главное меню"
-        inlineKeyboardResponse.inlineKeyboard = getHomeInlineKeyboard()
-
-    return inlineKeyboardResponse
+        return "Главное меню"
+    elif callback_data == "TOP-20-interest-rates":
+        return getBunchesFormattedString(brokerData)

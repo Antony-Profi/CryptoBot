@@ -9,16 +9,14 @@ def getMaxSpreadBrokers(groupedBrokerData):
 
     for firstBrokerData in groupedBrokerData:
       for secondBrokerData in groupedBrokerData:
-        currentSpread = abs(firstBrokerData["fundingRatePerHourRatio"] - secondBrokerData["fundingRatePerHourRatio"])
+        currentSpread = abs(firstBrokerData["fundingRate"] - secondBrokerData["fundingRate"])
 
         if currentSpread > maxSpread:
           maxSpread = currentSpread
           maxSpreadBrokers = {
             "symbol": firstBrokerData["symbol"],
-            "firstBroker": firstBrokerData["broker"],
-            "secondBroker": secondBrokerData["broker"],
-            "firstBrokerHoursLeft": firstBrokerData["hoursLeft"],
-            "secondBrokerHoursLeft": secondBrokerData["hoursLeft"],
+            "firstBrokerData": firstBrokerData,
+            "secondBrokerData": secondBrokerData,
             "spread": currentSpread,
           }
 
@@ -56,3 +54,5 @@ def analyzeBrokerData(brokerData):
     file.write(pprint.pformat(result)) 
   
   print('done')
+
+  return result

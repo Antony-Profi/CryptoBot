@@ -8,10 +8,12 @@ from aiogram.types import Message
 from aiogram.utils.keyboard import \
     ReplyKeyboardMarkup
 
+from helpers.bunchFormatter import getBunchesFormattedString
 from helpers.replyKeyboardHelper import getHomeReplyKeyboard
 from helpers.inlineKeyboardHelper import \
     getInlineKeyboardForCallback, \
     getHomeInlineKeyboard, \
+    getResponseTextForCallback, \
     getSettingsInlineKeyboard, \
     getPaymentsInlineKeyboard, \
     getTradeInlineKeyboard, \
@@ -23,7 +25,7 @@ from services.fetchDataWorker import start as startFetching
 
 TOKEN = "6769635335:AAHnLfxRzsJh7RnSFkcHgDzxnSDeckC4XaA"
 dp = Dispatcher()
-global brokerData
+brokerData = BrokerData()
 
 
 @dp.message(CommandStart())
@@ -92,13 +94,18 @@ async def echo_handler(message: types.Message):
 
 @dp.callback_query(F.data.startswith("keyboard_"))
 async def callbacks_num(callback: types.CallbackQuery):
-    inlineKeyboardResponse = getInlineKeyboardForCallback(callback)
+    inlineKeyboard = getInlineKeyboardForCallback(callback)
+    text = getResponseTextForCallback(callback, brokerData=brokerData)
 
-    await callback.message.answer(
-        text=inlineKeyboardResponse.reponseText,
-        reply_markup=inlineKeyboardResponse.inlineKeyboard,
-    )
-
+    if inlineKeyboard:
+        await callback.message.answer(
+            text=text,
+            reply_markup=inlineKeyboard,
+        )
+    else:
+        await callback.message.answer(
+            text=text,
+        )
 
 async def start():
     bot = Bot(
@@ -109,8 +116,10 @@ async def start():
     
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    asyncio.run(start())
-
-    brokerData = BrokerData()
     startFetching(120, brokerData)
+
+    # print(getBunchesFormattedString(brokerData.bunches));
+
+    # logging.basicConfig(level=logging.INFO)
+    # asyncio.run(start())
+

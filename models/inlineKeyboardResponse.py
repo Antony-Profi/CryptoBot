@@ -1,3 +1,0 @@
-class InlineKeyboardResponse:
-    reponseText = ""
-    inlineKeyboard = ""

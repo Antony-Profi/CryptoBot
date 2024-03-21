@@ -1,8 +1,7 @@
 import ccxt
-from enums import broker
-from enums.broker import Broker
 from constans import BINANCE
-from helpers.dateHelper import getHoursDifferenceWithCurrentDateTime
+from helpers.dateHelper import getTimeDifference
+from models.brokerFundingRate import BrokerFundingRate
 
 
 def fetchData(brokerData):
@@ -14,19 +13,13 @@ def fetchData(brokerData):
 
     for binance_funding_rate in binance_funding_rates.values():
 
-        formatted_binance_funding_rate = {
-            "broker": BINANCE,
-            "symbol": binance_funding_rate["symbol"],
-            "fundingRate": binance_funding_rate["fundingRate"],
-            "fundingDatetime": binance_funding_rate["fundingDatetime"],
-            "hoursLeft": getHoursDifferenceWithCurrentDateTime(binance_funding_rate["fundingDatetime"])
-        }
+        formatted_binance_funding_rate = BrokerFundingRate ()
+        formatted_binance_funding_rate.broker = BINANCE
+        formatted_binance_funding_rate.symbol = binance_funding_rate["symbol"]
+        formatted_binance_funding_rate.fundingRate = binance_funding_rate["fundingRate"]
+        formatted_binance_funding_rate.fundingDatetime = binance_funding_rate["fundingDatetime"]
+        formatted_binance_funding_rate.timeLeft = getTimeDifference(binance_funding_rate["fundingDatetime"])
 
-        if formatted_binance_funding_rate["hoursLeft"] >= 1:
-            formatted_binance_funding_rate["fundingRatePerHourRatio"] = formatted_binance_funding_rate["fundingRate"] / formatted_binance_funding_rate["hoursLeft"]
-        else:
-            formatted_binance_funding_rate["fundingRatePerHourRatio"] = 0
-            
         formatted_binance_funding_rates.append(formatted_binance_funding_rate)
 
     brokerData.binanceData = formatted_binance_funding_rates

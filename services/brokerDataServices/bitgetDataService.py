@@ -1,8 +1,6 @@
 import ccxt
-from enums import broker
-from enums.broker import Broker
 from constans import BITGET
-from helpers.dateHelper import getHoursDifferenceWithCurrentDateTime
+from helpers.dateHelper import getTimeDifference
 
 
 def fetchData(brokerData):
@@ -22,15 +20,8 @@ def fetchData(brokerData):
                 "symbol": bitget_funding_rate["symbol"],
                 "fundingRate": bitget_funding_rate["fundingRate"],
                 "fundingDatetime": bitget_funding_rate["fundingDatetime"],
-                "hoursLeft": getHoursDifferenceWithCurrentDateTime(bitget_funding_rate["fundingDatetime"])
+                "timeLeft": getTimeDifference(bitget_funding_rate["fundingDatetime"])
             }
-
-            if formatted_bitget_funding_rate["hoursLeft"] >= 1:
-                formatted_bitget_funding_rate["fundingRatePerHourRatio"] = formatted_bitget_funding_rate[
-                                                                                "fundingRate"] / \
-                                                                            formatted_bitget_funding_rate["hoursLeft"]
-            else:
-                formatted_bitget_funding_rate["fundingRatePerHourRatio"] = 0
 
             formatted_bitget_funding_rates.append(formatted_bitget_funding_rate)
 

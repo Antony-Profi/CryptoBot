@@ -1,8 +1,6 @@
 import ccxt
-from enums import broker
-from enums.broker import Broker
 from constans import BYBIT
-from helpers.dateHelper import getHoursDifferenceWithCurrentDateTime
+from helpers.dateHelper import getTimeDifference
 
 
 def fetchData(brokerData):
@@ -18,13 +16,8 @@ def fetchData(brokerData):
             "symbol": bybit_funding_rate["symbol"],
             "fundingRate": bybit_funding_rate["fundingRate"],
             "fundingDatetime": bybit_funding_rate["fundingDatetime"],
-            "hoursLeft": getHoursDifferenceWithCurrentDateTime(bybit_funding_rate["fundingDatetime"])
+            "timeLeft": getTimeDifference(bybit_funding_rate["fundingDatetime"])
         }
-        
-        if formatted_bybit_funding_rate["hoursLeft"] >= 1:
-            formatted_bybit_funding_rate["fundingRatePerHourRatio"] = bybit_funding_rate["fundingRate"] / formatted_bybit_funding_rate["hoursLeft"]
-        else:
-            formatted_bybit_funding_rate["fundingRatePerHourRatio"] = 0
         
         formatted_bybit_funding_rates.append(formatted_bybit_funding_rate)
 
