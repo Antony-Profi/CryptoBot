@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 import logging
 
 from aiogram import Bot, F, Dispatcher, types
@@ -18,10 +17,6 @@ from helpers.inlineKeyboardHelper import \
     getTradeInlineKeyboard, \
     getInforamtionInlineKeyboard
 
-from binance.client import Client
-
-import ccxt
-
 from models.brokerData import BrokerData
 from services.fetchDataWorker import start as startFetching
 
@@ -33,10 +28,7 @@ global brokerData
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message):
-    keyboard = getHomeReplyKeyboard()
     inlineKeyboard = getHomeInlineKeyboard()
-
-    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
 
     await message.answer(
         text="Главное меню",
@@ -46,10 +38,7 @@ async def command_start_handler(message: Message):
 
 @dp.message(Command("settings"))
 async def command_settings(message: Message):
-    keyboard = getHomeReplyKeyboard()
     inlineKeyboard = getSettingsInlineKeyboard()
-
-    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
 
     await message.answer(
         text="Настройки",
@@ -59,10 +48,7 @@ async def command_settings(message: Message):
 
 @dp.message(Command("payment"))
 async def command_payment(message: Message):
-    keyboard = getHomeReplyKeyboard()
     inlineKeyboard = getPaymentsInlineKeyboard()
-
-    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
 
     await message.answer(
         text="Оплата",
@@ -72,10 +58,7 @@ async def command_payment(message: Message):
 
 @dp.message(Command("deals"))
 async def command_trade(message: Message):
-    keyboard = getHomeReplyKeyboard()
     inlineKeyboard = getTradeInlineKeyboard()
-
-    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
 
     await message.answer(
         text="Торговля",
@@ -85,10 +68,7 @@ async def command_trade(message: Message):
 
 @dp.message(Command("info"))
 async def command_info(message: Message):
-    keyboard = getHomeReplyKeyboard()
     inlineKeyboard = getInforamtionInlineKeyboard()
-
-    markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
 
     await message.answer(
         text="Информация",
