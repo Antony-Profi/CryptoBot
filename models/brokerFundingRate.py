@@ -4,3 +4,4 @@ class BrokerFundingRate:
     fundingRate = 0,
     fundingDateTime = None,
     timeLeft = ""
+    markPrice = ""

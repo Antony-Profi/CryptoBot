@@ -8,13 +8,14 @@ def getMaxSpreadBrokers(groupedBrokerData):
   if len(groupedBrokerData) > 1:
 
     for firstBrokerData in groupedBrokerData:
+
       for secondBrokerData in groupedBrokerData:
-        currentSpread = abs(firstBrokerData["fundingRate"] - secondBrokerData["fundingRate"])
+        currentSpread = abs(firstBrokerData.fundingRate - secondBrokerData.fundingRate)
 
         if currentSpread > maxSpread:
           maxSpread = currentSpread
           maxSpreadBrokers = {
-            "symbol": firstBrokerData["symbol"],
+            "symbol": firstBrokerData.symbol,
             "firstBrokerData": firstBrokerData,
             "secondBrokerData": secondBrokerData,
             "spread": currentSpread,
@@ -37,7 +38,7 @@ def analyzeBrokerData(brokerData):
 
   groupedBrokerData = {}
   for brokerSymbolData in flattenBrokerData:
-      t = groupedBrokerData.setdefault(brokerSymbolData['symbol'], [])
+      t = groupedBrokerData.setdefault(brokerSymbolData.symbol, [])
       t.append(brokerSymbolData)
 
   result = []
@@ -50,8 +51,8 @@ def analyzeBrokerData(brokerData):
 
   result.sort(key=lambda x: x["spread"], reverse=True)
 
-  with open('../result.txt', 'w') as file: 
-    file.write(pprint.pformat(result)) 
+  # with open('result.txt', 'w') as file: 
+  #   file.write(pprint(result)) 
   
   print('done')
 

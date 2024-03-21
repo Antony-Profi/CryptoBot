@@ -128,4 +128,4 @@ def getResponseTextForCallback(callback: types.CallbackQuery, brokerData: Broker
     elif callback_data == "toTheBeginning":
         return "Главное меню"
     elif callback_data == "TOP-20-interest-rates":
-        return getBunchesFormattedString(brokerData)
+        return getBunchesFormattedString(brokerData.bunches)

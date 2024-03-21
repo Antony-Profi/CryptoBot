@@ -4,5 +4,7 @@ import timedelta
 
 
 def getTimeDifference(isoStrDateTime):
-    delta = timedelta.Timedelta(parser.isoparse(isoStrDateTime) - datetime.datetime.now(datetime.timezone.utc))
-    return str(delta)
+    delta = timedelta.Timedelta(parser.isoparse(isoStrDateTime) - 
+                                datetime.datetime.now(datetime.timezone.utc))
+
+    return str(delta).split('.')[0]
