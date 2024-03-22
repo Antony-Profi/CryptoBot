@@ -16,6 +16,7 @@ def fetchData(brokerData):
         formatted_bybit_funding_rate = BrokerFundingRate()
         formatted_bybit_funding_rate.broker = BYBIT
         formatted_bybit_funding_rate.symbol = bybit_funding_rate["symbol"]
+        formatted_bybit_funding_rate.markPrice = bybit_funding_rate["markPrice"]
         formatted_bybit_funding_rate.fundingRate = bybit_funding_rate["fundingRate"]
         formatted_bybit_funding_rate.fundingDatetime = bybit_funding_rate["fundingDatetime"]
         formatted_bybit_funding_rate.timeLeft = getTimeDifference(bybit_funding_rate["fundingDatetime"])

@@ -16,7 +16,9 @@ def fetchData(brokerData):
         formatted_gateio_funding_rate = BrokerFundingRate()
         formatted_gateio_funding_rate.broker = GATEIO
         formatted_gateio_funding_rate.symbol = gateio_funding_rate["symbol"]
+        formatted_gateio_funding_rate.markPrice = gateio_funding_rate["markPrice"]
         formatted_gateio_funding_rate.fundingRate = gateio_funding_rate["fundingRate"]
+        # formatted_gateio_funding_rate.fundingRate = "{:.7f}".format(gateio_funding_rate["fundingRate"])
         formatted_gateio_funding_rate.fundingDatetime = gateio_funding_rate["fundingDatetime"]
         formatted_gateio_funding_rate.timeLeft = getTimeDifference(gateio_funding_rate["fundingDatetime"])
 

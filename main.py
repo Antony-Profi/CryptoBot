@@ -120,7 +120,7 @@ async def start():
 if __name__ == "__main__":
     startFetching(120, brokerData)
 
-    print(getBunchesFormattedString(brokerData.bunches));
+    print(getBunchesFormattedString(brokerData.bunches))
 
     logging.basicConfig(level=logging.INFO)
     asyncio.run(start())

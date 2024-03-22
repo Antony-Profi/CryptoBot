@@ -1,3 +1,5 @@
+import math
+
 import ccxt
 from constans import BINANCE
 from helpers.dateHelper import getTimeDifference
@@ -20,7 +22,6 @@ def fetchData(brokerData):
         formatted_binance_funding_rate.fundingRate = binance_funding_rate["fundingRate"]
         formatted_binance_funding_rate.fundingDatetime = binance_funding_rate["fundingDatetime"]
         formatted_binance_funding_rate.timeLeft = getTimeDifference(binance_funding_rate["fundingDatetime"])
-        
 
         formatted_binance_funding_rates.append(formatted_binance_funding_rate)
 

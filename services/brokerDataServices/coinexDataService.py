@@ -15,6 +15,7 @@ def fetchData(brokerData):
         formatted_coinex_funding_rate = BrokerFundingRate()
         formatted_coinex_funding_rate.broker = COINEX
         formatted_coinex_funding_rate.symbol = coinex_funding_rate["symbol"]
+        formatted_coinex_funding_rate.markPrice = coinex_funding_rate["markPrice"]
         formatted_coinex_funding_rate.fundingRate = coinex_funding_rate["fundingRate"]
         formatted_coinex_funding_rate.fundingDateTime = coinex_funding_rate["fundingDatetime"]
         formatted_coinex_funding_rate.timeLeft = getTimeDifference(coinex_funding_rate["fundingDatetime"])
