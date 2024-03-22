@@ -1,6 +1,6 @@
 from aiogram import types
 
-from helpers.bunchFormatter import getBunchesFormattedString
+from helpers.bunchFormatter import getBunchesFormattedMessages
 from models.brokerData import BrokerData
 
 def getHomeInlineKeyboard():
@@ -110,22 +110,22 @@ def getInlineKeyboardForCallback(callback: types.CallbackQuery):
         return getHomeInlineKeyboard()
 
 
-def getResponseTextForCallback(callback: types.CallbackQuery, brokerData: BrokerData):
+def getResponseMessagesForCallback(callback: types.CallbackQuery, brokerData: BrokerData):
     callback_data = callback.data.split("_")[1]
 
     if callback_data == "settings":
-        return "Настройки"
+        return ["Настройки"]
     elif callback_data == "payments":
-        return "Оплата"
+        return ["Оплата"]
     elif callback_data == "trade":
-        return "Торговля"
+        return ["Торговля"]
     elif callback_data == "information":
-        return "Информация"
+        return ["Информация"]
     elif callback_data == "listOfExchanges":
-        return "Список бирж"
+        return ["Список бирж"]
     elif callback_data == "minSpread":
-        return "Выберите минимальный спред для получения актуальных связок:"
+        return ["Выберите минимальный спред для получения актуальных связок:"]
     elif callback_data == "toTheBeginning":
-        return "Главное меню"
+        return ["Главное меню"]
     elif callback_data == "TOP-20-interest-rates":
-        return getBunchesFormattedString(brokerData.bunches)
+        return getBunchesFormattedMessages(brokerData.bunches)

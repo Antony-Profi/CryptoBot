@@ -1,19 +1,19 @@
 from models.brokerData import BrokerData
 
 
-def getBunchesFormattedString(brokerData: BrokerData):
+def getBunchesFormattedMessages(brokerData: BrokerData):
     top20bunches = brokerData[:20]
     
-    result = ""
+    result = []
     
     for topBunch in top20bunches:
-        result += formatBunch(topBunch)
+        result.append(formatBunch(topBunch))
     
     return result
 
 
 def formatBunch(bunch):
-    result = bunch["firstBrokerData"].symbol + '\n' + '\n'
+    result = '<b>' + bunch["firstBrokerData"].symbol + '</b>' + '\n' + '\n'
 
     if bunch["firstBrokerData"].fundingRate > bunch["secondBrokerData"].fundingRate:
         result += formatFundingRateForShort(bunch["firstBrokerData"])
@@ -29,17 +29,17 @@ def formatBunch(bunch):
 
 def formatFundingRateForShort(fundingRate):
     result = 'Short:' + '\n'
-    result += fundingRate.broker + ' ' + str(fundingRate.fundingRate) + '\n'
+    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate, 'f') + '\n'
     result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
-    result += '💵 Цена: ' + str(fundingRate.markPrice) + '\n' + '\n'
+    result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
     return result
 
 
 def formatFundingRateForLong(fundingRate):
     result = 'Long:' + '\n'
-    result += fundingRate.broker + ' ' + str(fundingRate.fundingRate) + '\n'
+    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate, 'f') + '\n'
     result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
-    result += '💵 Цена: ' + str(fundingRate.markPrice) + '\n' + '\n'
+    result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
     return result
 
 
@@ -47,6 +47,6 @@ def formatSpreads(buyPrice, sellPrice, fundingSpread):
     buySellSpread = sellPrice-buyPrice/(buyPrice+sellPrice/2)
     result = "Спред:" + '\n' 
 
-    result += "💱 Курсы: " + str(buySellSpread) + '%' + '\n'
-    result += "⚖️ Ставки: " + str(fundingSpread) + '%' + '\n'
+    result += "💱 Курсы: " + format(buySellSpread, 'f') + '%' + '\n'
+    result += "⚖️ Ставки: " + format(fundingSpread, 'f') + '%' + '\n'
     return result
