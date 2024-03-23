@@ -29,7 +29,7 @@ def formatBunch(bunch):
 
 def formatFundingRateForShort(fundingRate):
     result = 'Short:' + '\n'
-    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate, 'f') + '\n'
+    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate, 'f') + '%' + '\n'
     result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
     result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
     return result
@@ -37,7 +37,7 @@ def formatFundingRateForShort(fundingRate):
 
 def formatFundingRateForLong(fundingRate):
     result = 'Long:' + '\n'
-    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate, 'f') + '\n'
+    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate, 'f') + '%' + '\n'
     result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
     result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
     return result
