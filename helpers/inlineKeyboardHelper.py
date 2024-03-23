@@ -34,8 +34,6 @@ def getPaymentsInlineKeyboard():
 def getTradeInlineKeyboard():
     buttons = [
         [types.InlineKeyboardButton(text="📃 ТОП-20 процентных ставок", callback_data="keyboard_TOP-20-interest-rates")],
-        [types.InlineKeyboardButton(text="🔄️ Связки на Фьючерсах", callback_data="keyboard_Links_onFutures")],
-        [types.InlineKeyboardButton(text="🔀 Связки на Фьючерсы-Спот", callback_data="keyboard_Bundles_onFutures-Spot")],
         [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
         [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
     ]

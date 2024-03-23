@@ -50,9 +50,6 @@ def analyzeBrokerData(brokerData):
       result.append(maxSpreadBrokers)
 
   result.sort(key=lambda x: x["spread"], reverse=True)
-
-  # with open('result.txt', 'w') as file: 
-  #   file.write(pprint(result)) 
   
   print('done')
 
