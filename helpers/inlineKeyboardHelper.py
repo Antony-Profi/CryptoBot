@@ -3,6 +3,7 @@ from aiogram import types
 from helpers.bunchFormatter import getBunchesFormattedMessages
 from models.brokerData import BrokerData
 
+
 def getHomeInlineKeyboard():
     buttons = [
         [types.InlineKeyboardButton(text="⚙️ Настройки", callback_data="keyboard_settings"),
@@ -44,6 +45,16 @@ def getInforamtionInlineKeyboard():
     buttons = [
         [types.InlineKeyboardButton(text="🏦 Список бирж", callback_data="keyboard_listOfExchanges")],
         [types.InlineKeyboardButton(text="🆘 Помощь", callback_data="keyboard_help")],
+        [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
+        [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def getTop20BunchesInlineKeyboard():
+    buttons = [
+        [types.InlineKeyboardButton(text="◀️Назад", callback_data="keyboard_back"),
+         types.InlineKeyboardButton(text="🔄️ Обновить", callback_data="keyboard_update")],
         [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
         [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
     ]
@@ -102,6 +113,8 @@ def getInlineKeyboardForCallback(callback: types.CallbackQuery):
         return getInforamtionInlineKeyboard()
     elif callback_data == "listOfExchanges":
         return getInlineKeyboardExchangeLists()
+    elif callback_data == "TOP-20-interest-rates":
+        return getTop20BunchesInlineKeyboard()
     elif callback_data == "minSpread":
         return getInlineKeyboardMinSpread()
     elif callback_data == "toTheBeginning":
@@ -121,9 +134,11 @@ def getResponseMessagesForCallback(callback: types.CallbackQuery, brokerData: Br
         return ["Информация"]
     elif callback_data == "listOfExchanges":
         return ["Список бирж"]
+    elif callback_data == "TOP-20-interest-rates":
+        return ["ТОП-20 процентных ставок:"]
     elif callback_data == "minSpread":
         return ["Выберите минимальный спред для получения актуальных связок:"]
     elif callback_data == "toTheBeginning":
         return ["Главное меню"]
-    elif callback_data == "TOP-20-interest-rates":
-        return getBunchesFormattedMessages(brokerData.bunches)
+    # elif callback_data == "TOP-20-interest-rates":
+    #     return getBunchesFormattedMessages(brokerData.bunches)

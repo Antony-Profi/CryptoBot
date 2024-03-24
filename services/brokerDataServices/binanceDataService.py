@@ -1,5 +1,3 @@
-import math
-
 import ccxt
 from constans import BINANCE
 from helpers.dateHelper import getTimeDifference
