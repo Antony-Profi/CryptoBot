@@ -113,8 +113,8 @@ def getInlineKeyboardForCallback(callback: types.CallbackQuery):
         return getInforamtionInlineKeyboard()
     elif callback_data == "listOfExchanges":
         return getInlineKeyboardExchangeLists()
-    elif callback_data == "TOP-20-interest-rates":
-        return getTop20BunchesInlineKeyboard()
+    # elif callback_data == "TOP-20-interest-rates":
+    #     return getTop20BunchesInlineKeyboard()
     elif callback_data == "minSpread":
         return getInlineKeyboardMinSpread()
     elif callback_data == "toTheBeginning":
@@ -134,11 +134,11 @@ def getResponseMessagesForCallback(callback: types.CallbackQuery, brokerData: Br
         return ["Информация"]
     elif callback_data == "listOfExchanges":
         return ["Список бирж"]
-    elif callback_data == "TOP-20-interest-rates":
-        return ["ТОП-20 процентных ставок:"]
+    # elif callback_data == "TOP-20-interest-rates":
+    #     return ["ТОП-20 процентных ставок:"]
     elif callback_data == "minSpread":
         return ["Выберите минимальный спред для получения актуальных связок:"]
     elif callback_data == "toTheBeginning":
         return ["Главное меню"]
-    # elif callback_data == "TOP-20-interest-rates":
-    #     return getBunchesFormattedMessages(brokerData.bunches)
+    elif callback_data == "TOP-20-interest-rates":
+        return getBunchesFormattedMessages(brokerData.bunches)

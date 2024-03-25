@@ -28,24 +28,24 @@ def formatBunch(bunch):
 
 
 def formatFundingRateForShort(fundingRate):
-    result = '🔴' + '\n' + 'Short:' + '\n'
-    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate, 'f') + '%' + '\n'
+    result = '🔴 ' + 'Short:' + '\n'
+    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate * 100, 'f') + '%' + '\n'
     result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
     result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
     return result
 
 
 def formatFundingRateForLong(fundingRate):
-    result = '🟢' + '\n' + 'Long:' + '\n'
-    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate, 'f') + '%' + '\n'
+    result = '🟢 ' + 'Long:' + '\n'
+    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate * 100, 'f') + '%' + '\n'
     result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
     result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
     return result
 
 
 def formatSpreads(buyPrice, sellPrice, fundingSpread):
-    buySellSpread = sellPrice-buyPrice/(buyPrice+sellPrice/2)
-    result = "Спред:" + '\n' 
+    buySellSpread = sellPrice - buyPrice / (buyPrice + sellPrice / 2)
+    result = "Спред:" + '\n'
 
     result += "💱 Курсы: " + format(buySellSpread, 'f') + '%' + '\n'
     result += "⚖️ Ставки: " + format(fundingSpread * 100, 'f') + '%' + '\n'
