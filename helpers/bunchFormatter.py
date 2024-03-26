@@ -1,6 +1,8 @@
 from models.brokerData import BrokerData
 
 
+
+
 def getBunchesFormattedMessages(brokerData: BrokerData):
     top20bunches = brokerData[:20]
     
@@ -40,6 +42,7 @@ def formatFundingRateForLong(fundingRate):
     result += fundingRate.broker + ' ' + format(fundingRate.fundingRate * 100, 'f') + '%' + '\n'
     result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
     result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
+    
     return result
 
 
@@ -47,10 +50,7 @@ def formatSpreads(buyPrice, sellPrice, fundingSpread):
     buySellSpread = sellPrice - buyPrice / (buyPrice + sellPrice / 2)
     result = "Спред:" + '\n'
 
-    if fundingSpread < 0.1:
-        result += "** Курсы:** " + format(buySellSpread, 'f') + '%' + '\n'  # Bold for emphasis
-        result += "**⚖️ Ставки:** " + format(fundingSpread * 100, 'f') + '%' + '\n'
-    else:
-        result += "💱 Курсы: " + format(buySellSpread, 'f') + '%' + '\n'
-        result += "⚖️ Ставки: " + format(fundingSpread * 100, 'f') + '%' + '\n'
+    result += "💱 Курсы: " + format(buySellSpread, 'f') + '%' + '\n'
+    result += "⚖️ Ставки: " + format(fundingSpread * 100, 'f') + '%' + '\n'
+    
     return result

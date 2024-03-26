@@ -142,3 +142,4 @@ def getResponseMessagesForCallback(callback: types.CallbackQuery, brokerData: Br
         return ["Главное меню"]
     elif callback_data == "TOP-20-interest-rates":
         return getBunchesFormattedMessages(brokerData.bunches)
+        

@@ -1,56 +1,90 @@
-import pprint
+from models.bunch import Bunch
 
-
-def getMaxSpreadBrokers(groupedBrokerData):
-  maxSpread = 0
-  maxSpreadBrokers = {}
-
-  if len(groupedBrokerData) > 1:
-
-    for firstBrokerData in groupedBrokerData:
-
-      for secondBrokerData in groupedBrokerData:
-        currentSpread = abs(firstBrokerData.fundingRate - secondBrokerData.fundingRate)
-
-        if currentSpread > maxSpread:
-          maxSpread = currentSpread
-          maxSpreadBrokers = {
-            "symbol": firstBrokerData.symbol,
-            "firstBrokerData": firstBrokerData,
-            "secondBrokerData": secondBrokerData,
-            "spread": currentSpread,
-          }
-
-    if maxSpread > 0:
-      return maxSpreadBrokers
-    else:
-      return None
-
-  else:
-    return None
-
-  
 def analyzeBrokerData(brokerData):
-  flattenBrokerData = brokerData.binanceData\
-                      + brokerData.bybitData\
-                      + brokerData.coinexData\
-                      + brokerData.gateioData
+  flattenBrokerData = flatBrokerData(brokerData)
 
-  groupedBrokerData = {}
-  for brokerSymbolData in flattenBrokerData:
-      t = groupedBrokerData.setdefault(brokerSymbolData.symbol, [])
-      t.append(brokerSymbolData)
+  groupedBrokerData = groupBrokerDataBySymbol(flattenBrokerData)
 
-  result = []
+  bunches = []
 
   for symbol in groupedBrokerData.keys():
-    maxSpreadBrokers = getMaxSpreadBrokers(groupedBrokerData[symbol])
+    bunch = getBunchForSymbol(groupedBrokerData[symbol])
 
-    if maxSpreadBrokers != None:
-      result.append(maxSpreadBrokers)
+    if bunch != None and bunch.fundingSpread > 0.001:
+      bunches.append(bunch)
 
-  result.sort(key=lambda x: x["spread"], reverse=True)
+  bunches.sort(key=lambda x: x.fundingSpread, reverse=True)
+
+  bunches = bunches[:20]
+
+  return bunches
+
+def flatBrokerData(brokerData):
+  return brokerData.binanceData\
+        + brokerData.bybitData\
+        + brokerData.coinexData\
+        + brokerData.gateioData
+
+def groupBrokerDataBySymbol(brokerData):
+  groupedBrokerData = {}
+
+  for brokerSymbolData in brokerData:
+      t = groupedBrokerData.setdefault(brokerSymbolData.symbol, [])
+      t.append(brokerSymbolData)
   
-  print('done')
+  return groupedBrokerData
 
-  return result
+def getBunchForSymbol(symbolFundingRates):
+
+  if len(symbolFundingRates) <= 1:
+    return None
+  
+  maxSpreadFundingRates = getMaxSpreadFundingRatesBySymbol(symbolFundingRates)
+
+  if maxSpreadFundingRates == None:
+    return None
+
+  return createBunchFromMaxSpreadFundingRates(maxSpreadFundingRates)
+
+def getMaxSpreadFundingRatesBySymbol(symbolFundingRates):
+  resultFundingRateA = {}
+  resultFundingRateB = {}
+  maxSpread = 0
+
+  for fundingRateA in symbolFundingRates:
+
+    for fundingRateB in symbolFundingRates:
+      currentSpread = abs(fundingRateA.fundingRate - fundingRateB.fundingRate)
+
+      if currentSpread > maxSpread:
+        maxSpread = currentSpread
+        resultFundingRateA = fundingRateA
+        resultFundingRateB = fundingRateB
+
+  if maxSpread > 0:
+    return [resultFundingRateA, resultFundingRateB]
+  else:
+    return None
+  
+def createBunchFromMaxSpreadFundingRates(maxSpreadFundingRates):
+
+  maxSpreadFundingRates.sort(key=lambda x: x.fundingRate, reverse=True)
+
+  shortFundingRate = maxSpreadFundingRates[0]
+  longFundingRate = maxSpreadFundingRates[1]
+
+  priceSpread = (shortFundingRate.markPrice - longFundingRate.markPrice) / ((shortFundingRate.markPrice + longFundingRate.markPrice) / 2)
+  fundingSpread = abs(shortFundingRate.fundingRate - longFundingRate.fundingRate)
+
+  bunch: Bunch = Bunch(shortFundingRate.symbol,
+                       shortFundingRate.broker,
+                       shortFundingRate.fundingRate,
+                       shortFundingRate.fundingRateExpirationDateTime,
+                       shortFundingRate.markPrice,
+                       longFundingRate.broker,
+                       longFundingRate.fundingRate,
+                       longFundingRate.fundingRateExpirationDateTime,
+                       longFundingRate.markPrice, 
+                       priceSpread,
+                       fundingSpread)
+  return bunch
