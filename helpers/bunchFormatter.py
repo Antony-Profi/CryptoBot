@@ -47,6 +47,10 @@ def formatSpreads(buyPrice, sellPrice, fundingSpread):
     buySellSpread = sellPrice - buyPrice / (buyPrice + sellPrice / 2)
     result = "Спред:" + '\n'
 
-    result += "💱 Курсы: " + format(buySellSpread, 'f') + '%' + '\n'
-    result += "⚖️ Ставки: " + format(fundingSpread * 100, 'f') + '%' + '\n'
+    if fundingSpread < 0.1:
+        result += "** Курсы:** " + format(buySellSpread, 'f') + '%' + '\n'  # Bold for emphasis
+        result += "**⚖️ Ставки:** " + format(fundingSpread * 100, 'f') + '%' + '\n'
+    else:
+        result += "💱 Курсы: " + format(buySellSpread, 'f') + '%' + '\n'
+        result += "⚖️ Ставки: " + format(fundingSpread * 100, 'f') + '%' + '\n'
     return result

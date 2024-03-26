@@ -20,6 +20,7 @@ global brokerData
 
 def runInParallel(*fns):
   proc = []
+
   for fn in fns:
     p = Process(target=fn)
     p.start()
@@ -31,11 +32,11 @@ def runInParallel(*fns):
 
 
 def start(timeout: int, brokerData: BrokerData):
-  runInParallel(fetchBinanceData(brokerData),
-                fetchBybitData(brokerData),
-                fetchCoinexData(brokerData),
-                fetchGateioData(brokerData))
+    runInParallel(fetchBinanceData(brokerData),
+                  fetchBybitData(brokerData),
+                  fetchCoinexData(brokerData),
+                  fetchGateioData(brokerData))
 
-  brokerData.bunches = analyzeBrokerData(brokerData)
+    brokerData.bunches = analyzeBrokerData(brokerData)
 
-  threading.Timer(timeout, start, [timeout, brokerData]).start()
+    threading.Timer(timeout, start, [timeout, brokerData]).start()
