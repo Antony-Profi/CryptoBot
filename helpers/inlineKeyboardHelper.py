@@ -51,27 +51,6 @@ def getInforamtionInlineKeyboard():
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def getListTop20BunchesInlineKeyboard():
-    buttons = [
-        [types.InlineKeyboardButton(text="symbol", callback_data="keyboard_TOP-20-interest-rates_0")],
-        [types.InlineKeyboardButton(text="shortBroker", callback_data="keyboard_TOP-20-interest-rates_1")],
-        [types.InlineKeyboardButton(text="shortFundingRate", callback_data="kyboard_TOP-20-interest-rates_2")],
-        [types.InlineKeyboardButton(text="STARL", callback_data="keyboard_TOP-20-interest-rates_3")],
-        [types.InlineKeyboardButton(text="WEN", callback_data="keyboard_TOP-20-interest-rates_4")],
-        [types.InlineKeyboardButton(text="FOOTBALL", callback_data="keyboard_TOP-20-interest-rates_5")],
-        [types.InlineKeyboardButton(text="BIT", callback_data="keyboard_TOP-20-interest-rates_6")],
-        [types.InlineKeyboardButton(text="DHX", callback_data="keyboard_TOP-20-interest-rates_7")],
-        [types.InlineKeyboardButton(text="BTC", callback_data="keyboard_TOP-20-interest-rates_8")],
-        [types.InlineKeyboardButton(text="WIF", callback_data="keyboard_TOP-20-interest-rates_9")],
-        [types.InlineKeyboardButton(text="HNT", callback_data="keyboard_TOP-20-interest-rates_10")],
-        [types.InlineKeyboardButton(text="WOJAK", callback_data="keyboard_TOP-20-interest-rates_11")],
-        [types.InlineKeyboardButton(text="SILLY", callback_data="keyboard_TOP-20-interest-rates_12")],
-        [types.InlineKeyboardButton(text="SCRT", callback_data="keyboard_TOP-20-interest-rates_13")],
-        [types.InlineKeyboardButton(text="AIDOGE", callback_data="keyboard_TOP-20-interest-rates_14")],
-    ]
-    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
-
-
 def getTop20BunchesInlineKeyboard():
     buttons = [
         [types.InlineKeyboardButton(text="◀️Назад", callback_data="keyboard_back"),
@@ -134,8 +113,8 @@ def getInlineKeyboardForCallback(callback: types.CallbackQuery):
         return getInforamtionInlineKeyboard()
     elif callback_data == "listOfExchanges":
         return getInlineKeyboardExchangeLists()
-    elif callback_data == "TOP-20-interest-rates_0":
-        return getListTop20BunchesInlineKeyboard()
+    # elif callback_data == "TOP-20-interest-rates":
+    #     return getTop20BunchesInlineKeyboard()
     elif callback_data == "minSpread":
         return getInlineKeyboardMinSpread()
     elif callback_data == "toTheBeginning":
@@ -163,5 +142,4 @@ def getResponseMessagesForCallback(callback: types.CallbackQuery, brokerData: Br
         return ["Главное меню"]
     elif callback_data == "TOP-20-interest-rates":
         return getBunchesFormattedMessages(brokerData.bunches)
-    elif callback_data == "TOP-20-interest-rates_0":
-        return getBunchesFormattedMessages(brokerData.bunches[0])
+        
