@@ -1,17 +1,17 @@
 class Bunch:
     
     def __init__(self, 
-                symbol, 
-                shortBroker, 
-                shortFundingRate, 
-                shortFundingRateExpirationDateTime, 
-                shortMarkPrice,
-                longBroker, 
-                longFundingRate, 
-                longFundingRateExpirationDateTime, 
-                longMarkPrice,
-                priceSpread,
-                fundingSpread):
+                 symbol,
+                 shortBroker,
+                 shortFundingRate,
+                 shortFundingRateExpirationDateTime,
+                 shortMarkPrice,
+                 longBroker,
+                 longFundingRate,
+                 longFundingRateExpirationDateTime,
+                 longMarkPrice,
+                 priceSpread,
+                 fundingSpread):
         self.symbol = symbol
         self.shortBroker = shortBroker
         self.shortFundingRate = shortFundingRate
@@ -23,6 +23,3 @@ class Bunch:
         self.longMarkPrice = longMarkPrice
         self.priceSpread = priceSpread
         self.fundingSpread = fundingSpread
-
-
-

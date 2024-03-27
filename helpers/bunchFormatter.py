@@ -1,8 +1,6 @@
 from models.brokerData import BrokerData
 
 
-
-
 def getBunchesFormattedMessages(brokerData: BrokerData):
     top20bunches = brokerData[:20]
     
@@ -15,33 +13,33 @@ def getBunchesFormattedMessages(brokerData: BrokerData):
 
 
 def formatBunch(bunch):
-    result = '<b>' + bunch["firstBrokerData"].symbol + '</b>' + '\n' + '\n'
+    result = '<b>' + bunch.symbol + '</b>' + '\n' + '\n'
 
-    if bunch["firstBrokerData"].fundingRate > bunch["secondBrokerData"].fundingRate:
-        result += formatFundingRateForShort(bunch["firstBrokerData"])
-        result += formatFundingRateForLong(bunch["secondBrokerData"])
-        result += formatSpreads(bunch["secondBrokerData"].fundingRate, bunch["firstBrokerData"].fundingRate, bunch["spread"])
+    if bunch.shortFundingRate > bunch.longFundingRate:
+        result += formatFundingRateForShort(bunch)
+        result += formatFundingRateForLong(bunch)
+        # result += formatSpreads(bunch.secondBrokerData.fundingRate, bunch.firstBrokerData.fundingRate, bunch.spread)
     else:
-        result += formatFundingRateForShort(bunch["secondBrokerData"])
-        result += formatFundingRateForLong(bunch["firstBrokerData"])
-        result += formatSpreads(bunch["firstBrokerData"].fundingRate, bunch["secondBrokerData"].fundingRate, bunch["spread"])
+        result += formatFundingRateForShort(bunch)
+        result += formatFundingRateForLong(bunch)
+        # result += formatSpreads(bunch.secondBrokerData.fundingRate, bunch.firstBrokerData.fundingRate, bunch.spread)
 
     return result + '\n' + '\n'
 
 
-def formatFundingRateForShort(fundingRate):
+def formatFundingRateForShort(bunch):
     result = '🔴 ' + 'Short:' + '\n'
-    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate * 100, 'f') + '%' + '\n'
-    result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
-    result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
+    result += bunch.shortBroker + ' ' + format(bunch.shortFundingRate * 100, 'f') + '%' + '\n'
+    result += '🕒 До начисления: ' + bunch.shortFundingRateExpirationDateTime + '\n'
+    result += '💵 Цена: ' + format(bunch.shortMarkPrice, 'f') + '\n' + '\n'
     return result
 
 
-def formatFundingRateForLong(fundingRate):
+def formatFundingRateForLong(bunch):
     result = '🟢 ' + 'Long:' + '\n'
-    result += fundingRate.broker + ' ' + format(fundingRate.fundingRate * 100, 'f') + '%' + '\n'
-    result += '🕒 До начисления: ' + fundingRate.timeLeft + '\n'
-    result += '💵 Цена: ' + format(fundingRate.markPrice, 'f') + '\n' + '\n'
+    result += bunch.longBroker + ' ' + format(bunch.longFundingRate * 100, 'f') + '%' + '\n'
+    result += '🕒 До начисления: ' + bunch.longFundingRateExpirationDateTime + '\n'
+    result += '💵 Цена: ' + format(bunch.longMarkPrice, 'f') + '\n' + '\n'
     
     return result
 
