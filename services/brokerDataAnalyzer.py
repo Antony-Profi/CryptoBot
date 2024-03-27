@@ -73,7 +73,7 @@ def createBunchFromMaxSpreadFundingRates(maxSpreadFundingRates):
   shortFundingRate = maxSpreadFundingRates[0]
   longFundingRate = maxSpreadFundingRates[1]
 
-  priceSpread = (shortFundingRate.markPrice - longFundingRate.markPrice) / ((shortFundingRate.markPrice + longFundingRate.markPrice) / 2)
+  priceSpread = (shortFundingRate.markPrice - longFundingRate.markPrice) / shortFundingRate.markPrice
   fundingSpread = abs(shortFundingRate.fundingRate - longFundingRate.fundingRate)
 
   bunch: Bunch = Bunch(shortFundingRate.symbol,

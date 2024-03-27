@@ -1,8 +1,6 @@
 import ccxt
 from constans import BINANCE
-from helpers.dateHelper import getTimeDifference
 from models.brokerFundingRate import BrokerFundingRate
-
 
 def fetchData(brokerData):
     binance = ccxt.binance()

@@ -24,5 +24,8 @@ class Bunch:
         self.priceSpread = priceSpread
         self.fundingSpread = fundingSpread
 
+    def getButtonLabel(self):
+        return self.symbol + ": от " + str(self.fundingSpread * 100)
+
 
 

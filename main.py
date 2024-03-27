@@ -8,16 +8,16 @@ from aiogram.types import Message
 from aiogram.utils.keyboard import \
     ReplyKeyboardMarkup
 
+from constans import KEYBOARD_KEYS
 from helpers.bunchFormatter import getBunchesFormattedMessages
-from helpers.replyKeyboardHelper import getHomeReplyKeyboard
 from helpers.inlineKeyboardHelper import \
-    getInlineKeyboardForCallback, \
+    getCallbackResponse, \
     getHomeInlineKeyboard, \
-    getResponseMessagesForCallback, \
-    getSettingsInlineKeyboard, \
-    getPaymentsInlineKeyboard, \
+    getInforamtionInlineKeyboard, \
     getTradeInlineKeyboard, \
-    getInforamtionInlineKeyboard
+    getPaymentsInlineKeyboard, \
+    getSettingsInlineKeyboard, \
+    getHomeInlineKeyboard
 
 from models.brokerData import BrokerData
 from services.fetchDataWorker import start as startFetching
@@ -92,22 +92,15 @@ async def echo_handler(message: types.Message):
         await message.answer("Nice try!")
 
 
-@dp.callback_query(F.data.startswith("keyboard_"))
+@dp.callback_query(F.data.startswith(KEYBOARD_KEYS.PREFIX.value))
 async def callbacks_num(callback: types.CallbackQuery):
-    inlineKeyboard = getInlineKeyboardForCallback(callback)
-    messages = getResponseMessagesForCallback(callback, brokerData=brokerData)
 
-    if inlineKeyboard:
-        for message in messages: 
-            await callback.message.answer(
-                text=message,
-                reply_markup=inlineKeyboard,
-            )
-    else:
-        for message in messages: 
-            await callback.message.answer(
-                text=message,
-            )
+    callbackResponse = getCallbackResponse(callback, brokerData)
+
+    await callback.message.answer(
+        text=callbackResponse.text,
+        reply_markup=callbackResponse.replyMarkup,
+    )
 
 
 async def start():

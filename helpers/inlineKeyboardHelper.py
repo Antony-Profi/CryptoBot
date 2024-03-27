@@ -1,16 +1,55 @@
 from aiogram import types
 
+from constans import KEYBOARD_KEYS, BUTTON_TEXT_BY_KEY
 from helpers.bunchFormatter import getBunchesFormattedMessages
 from models.brokerData import BrokerData
+from models.bunch import Bunch
+from models.callbackResponse import CallbackResponse
 
+
+def getCallbackResponse(callback: types.CallbackQuery, brokerData: BrokerData) -> CallbackResponse: 
+    callbackKey = callback.data.split("_")[1]
+    
+    if callbackKey == KEYBOARD_KEYS.SETTINGS.value:    
+        return CallbackResponse(
+            BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.SETTINGS],
+             getSettingsInlineKeyboard())    
+    elif callbackKey == KEYBOARD_KEYS.EXCHANGES_LIST.value:
+        return CallbackResponse(
+            BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.EXCHANGES_LIST],
+             getPaymentsInlineKeyboard())  
+    elif callbackKey == KEYBOARD_KEYS.TRADING.value:
+        return CallbackResponse(
+            BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.TRADING],
+             getTradeInlineKeyboard())  
+    elif callbackKey == KEYBOARD_KEYS.INFORMATION.value:
+        return CallbackResponse(
+            BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.INFORMATION],
+             getInforamtionInlineKeyboard())  
+    elif callbackKey == KEYBOARD_KEYS.EXCHANGES_LIST.value:
+        return CallbackResponse(
+            BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.EXCHANGES_LIST],
+             getInlineKeyboardExchangeLists())  
+    elif callbackKey == KEYBOARD_KEYS.TOP_INTEREST_RATES.value:
+        return CallbackResponse(
+            BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.TOP_INTEREST_RATES],
+             getTop20BunchesInlineKeyboard(brokerData.bunches))  
+    elif callbackKey == KEYBOARD_KEYS.MIN_SPREAD.value:
+        return CallbackResponse(
+            BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.MIN_SPREAD],
+             getInlineKeyboardMinSpread())  
+    elif callbackKey == KEYBOARD_KEYS.GO_HOME.value:
+        return CallbackResponse(
+            BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.GO_HOME],
+             getHomeInlineKeyboard())  
 
 def getHomeInlineKeyboard():
     buttons = [
-        [types.InlineKeyboardButton(text="⚙️ Настройки", callback_data="keyboard_settings"),
-         types.InlineKeyboardButton(text="💵️ Оплата", callback_data="keyboard_payments")],
-        [types.InlineKeyboardButton(text="📋️ Торговля", callback_data="keyboard_trade")],
-        [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
-        [types.InlineKeyboardButton(text="📓️️ Информация", callback_data="keyboard_information")],
+        [types.InlineKeyboardButton(text=BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.SETTINGS], callback_data=str(KEYBOARD_KEYS.PREFIX.value + KEYBOARD_KEYS.SETTINGS.value)),
+         types.InlineKeyboardButton(text=BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.PAYMENTS], callback_data=str(KEYBOARD_KEYS.PREFIX.value + KEYBOARD_KEYS.PAYMENTS.value))],
+        [types.InlineKeyboardButton(text=BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.TRADING], callback_data=str(KEYBOARD_KEYS.PREFIX.value + KEYBOARD_KEYS.TRADING.value))],
+        [types.InlineKeyboardButton(text=BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.INSTRUCTION], url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
+        [types.InlineKeyboardButton(text=BUTTON_TEXT_BY_KEY[KEYBOARD_KEYS.INFORMATION], callback_data=str(KEYBOARD_KEYS.PREFIX.value + KEYBOARD_KEYS.INFORMATION.value))],
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -34,7 +73,7 @@ def getPaymentsInlineKeyboard():
 
 def getTradeInlineKeyboard():
     buttons = [
-        [types.InlineKeyboardButton(text="📃 ТОП-20 процентных ставок", callback_data="keyboard_TOP-20-interest-rates")],
+        [types.InlineKeyboardButton(text="📃 ТОП-20 процентных ставок", callback_data=str(KEYBOARD_KEYS.PREFIX.value + KEYBOARD_KEYS.TOP_INTEREST_RATES.value))],
         [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
         [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
     ]
@@ -51,13 +90,15 @@ def getInforamtionInlineKeyboard():
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def getTop20BunchesInlineKeyboard():
-    buttons = [
-        [types.InlineKeyboardButton(text="◀️Назад", callback_data="keyboard_back"),
-         types.InlineKeyboardButton(text="🔄️ Обновить", callback_data="keyboard_update")],
-        [types.InlineKeyboardButton(text="🗒️ Инструкция", url="https://telegra.ph/Rabota-s-Dagger-Funding-Bot-12-05")],
-        [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
-    ]
+def getTop20BunchesInlineKeyboard(bunches: list[Bunch]):
+    buttons = []
+
+    for bunch in bunches:
+        buttons.append(
+            [types.InlineKeyboardButton(text=bunch.getButtonLabel(), 
+                                        callback_data=str(KEYBOARD_KEYS.PREFIX.value + KEYBOARD_KEYS.TOP_INTEREST_RATES.value + ":" + str(bunches.index(bunch))))],
+        )
+
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
@@ -98,48 +139,3 @@ def getInlineKeyboardExchangeLists():
         [types.InlineKeyboardButton(text="🏠 В начало", callback_data="keyboard_toTheBeginning")],
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
-
-
-def getInlineKeyboardForCallback(callback: types.CallbackQuery):
-    callback_data = callback.data.split("_")[1]
-
-    if callback_data == "settings":
-        return getSettingsInlineKeyboard()
-    elif callback_data == "payments":
-        return getPaymentsInlineKeyboard()
-    elif callback_data == "trade":
-        return getTradeInlineKeyboard()
-    elif callback_data == "information":
-        return getInforamtionInlineKeyboard()
-    elif callback_data == "listOfExchanges":
-        return getInlineKeyboardExchangeLists()
-    # elif callback_data == "TOP-20-interest-rates":
-    #     return getTop20BunchesInlineKeyboard()
-    elif callback_data == "minSpread":
-        return getInlineKeyboardMinSpread()
-    elif callback_data == "toTheBeginning":
-        return getHomeInlineKeyboard()
-
-
-def getResponseMessagesForCallback(callback: types.CallbackQuery, brokerData: BrokerData):
-    callback_data = callback.data.split("_")[1]
-
-    if callback_data == "settings":
-        return ["Настройки"]
-    elif callback_data == "payments":
-        return ["Оплата"]
-    elif callback_data == "trade":
-        return ["Торговля"]
-    elif callback_data == "information":
-        return ["Информация"]
-    elif callback_data == "listOfExchanges":
-        return ["Список бирж"]
-    # elif callback_data == "TOP-20-interest-rates":
-    #     return ["ТОП-20 процентных ставок:"]
-    elif callback_data == "minSpread":
-        return ["Выберите минимальный спред для получения актуальных связок:"]
-    elif callback_data == "toTheBeginning":
-        return ["Главное меню"]
-    elif callback_data == "TOP-20-interest-rates":
-        return getBunchesFormattedMessages(brokerData.bunches)
-        
