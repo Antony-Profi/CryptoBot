@@ -2,6 +2,7 @@ import ccxt
 from constans import BINANCE
 from models.brokerFundingRate import BrokerFundingRate
 
+
 def fetchData(brokerData):
     binance = ccxt.binance()
 
@@ -12,10 +13,10 @@ def fetchData(brokerData):
     for binance_funding_rate in binance_funding_rates.values():
 
         formatted_binance_funding_rate = BrokerFundingRate(BINANCE,
-                                                            binance_funding_rate["symbol"], 
-                                                            binance_funding_rate["fundingRate"],
-                                                            binance_funding_rate["fundingDatetime"],
-                                                            binance_funding_rate["markPrice"])
+                                                           binance_funding_rate["symbol"],
+                                                           binance_funding_rate["fundingRate"],
+                                                           binance_funding_rate["fundingDatetime"],
+                                                           binance_funding_rate["markPrice"])
 
         formatted_binance_funding_rates.append(formatted_binance_funding_rate)
 

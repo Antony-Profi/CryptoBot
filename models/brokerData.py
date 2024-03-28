@@ -14,4 +14,3 @@ class BrokerData:
     okxData: dict[str, object]
     bitmartData: dict[str, object]
     bunches: list[Bunch]
-
